@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mum Meow - ฟอร์มสั่งผลิต</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 20px; background: #f9f5f7; }
+        #order-form-container { 
+            font-family: 'Sarabun', sans-serif; 
+            max-width: 550px; 
+            margin: 0 auto; 
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(118, 97, 91, 0.1); 
+            border: 1px solid #f1dbf0; 
+            color: #444; 
+        }
+        input, select, button { font-family: 'Sarabun', sans-serif !important; }
+        .product-item { 
+            padding: 15px; 
+            border: 2px solid #f1dbf0; 
+            border-radius: 10px; 
+            margin-bottom: 15px; 
+            background: #fffcfd; 
+        }
+        .product-item.error { border-color: #d63384; background: #fff5f8; }
+        label { 
+            font-weight: 600; 
+            color: #76615b; 
+            font-size: 0.9rem; 
+            margin-bottom: 5px; 
+            display: block; 
+            margin-top: 8px;
+        }
+        input, select { 
+            width: 100%; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            font-size: 0.95rem; 
+        }
+        input:focus, select:focus { outline: none; border-color: #76615b; }
+        .btn-add { 
+            background: #f1dbf0; 
+            color: #76615b; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            width: 100%; 
+            margin-bottom: 20px; 
+        }
+        .btn-add:hover { background: #e8c8e6; }
+        .btn-remove {
+            background: #f1dbf0;
+            color: #76615b;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        .btn-remove:hover { background: #e8c8e6; }
+        .btn-submit { 
+            background: #76615b; 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 25px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 1rem; 
+        }
+        .btn-submit:hover { background: #5c4e47; }
+        .terms-box { 
+            background: #fffcfd; 
+            border: 1px solid #f1dbf0; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 20px; 
+            color: #76615b; 
+            font-size: 0.85rem; 
+            line-height: 1.5; 
+        }
+        .total-display { 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            color: #d63384; 
+            text-align: center; 
+            padding: 15px; 
+            background: #fff0f5; 
+            border-radius: 10px; 
+            border: 2px dashed #d63384; 
+            margin-bottom: 20px;
+        }
+        .info-box { 
+            background: #fffcfd; 
+            border: 1px solid #f1dbf0; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 15px; 
+            color: #76615b; 
+            font-size: 0.9rem; 
+            line-height: 1.6;
+        }
+        .info-box a { color: #d63384; font-weight: bold; text-decoration: none; }
+        .info-box a:hover { text-decoration: underline; }
+        .payment-info {
+            background: #fffcfd; 
+            border: 2px solid #f1dbf0; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 20px; 
+            color: #76615b; 
+            line-height: 1.8;
+        }
+        .payment-info div { margin-bottom: 8px; }
+        .error-message { 
+            color: #d63384; 
+            font-size: 0.85rem; 
+            margin-top: -8px; 
+            margin-bottom: 10px; 
+        }
+        .row-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .row-2col input, .row-2col select { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+
+<div id="order-form-container">
+    <div class="info-box">
+        <div style="margin-bottom: 8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
+        <div style="margin-bottom: 8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
+        <div style="margin-bottom: 8px;">🚨 ปิดรับรอบทุกวันศุกร์ เวลา 22.00 น.</div>
+        <div style="border-top: 1px solid #f1dbf0; padding-top: 10px; font-weight: bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
+    </div>
+
+    <label>บัญชี X / Twitter</label>
+    <input type="text" id="twitter" placeholder="@username">
+    
+    <label>ชื่อไลน์ที่แสดง (❌ไม่ใช่ ID)</label>
+    <input type="text" id="line" placeholder="เช่น ชิษณุชา">
+    
+    <label>ลิงก์ Google Drive (ไฟล์งาน)</label>
+    <input type="text" id="drive_link" placeholder="https://drive.google.com/...">
+
+    <!-- รายการสั่งซื้อ -->
+    <div id="product-list"></div>
+    <button type="button" class="btn-add" onclick="addProduct()">+ เพิ่มรายการสั่งซื้อ (สูงสุด 3 รายการ)</button>
+
+    <!-- ข้อมูลการโอนเงิน -->
+    <div class="payment-info">
+        <div style="font-weight: bold; margin-bottom: 5px;">จ่ายรอบแรก เฉพาะค่าผลิตสินค้า</div>
+        <div>❌ ยังไม่ต้องชำระค่าจัดส่ง</div>
+        <div style="font-weight: bold; font-size: 1.15rem; margin: 10px 0;">🏦 919-2-54566-4</div>
+        <div>ธนาคาร TTB (ธนาคารทหารไทยธนชาต)</div>
+        <div>- ชิษณุชา / Chitsanucha</div>
+        <div style="font-weight: bold; margin-top: 10px;">📌 ทางร้านจะรับคำสั่งซื้อต่อเมื่อโอนชำระแล้ว 📌</div>
+        <div style="color: #d63384;">⚠️ เรียกชำระ 2 รอบ (รอบ 2: ค่าชิป+ค่าส่ง)</div>
+    </div>
+
+    <!-- ยอดรวม -->
+    <div class="total-display">ยอดชำระค่าผลิต (ไม่รวมชิปปิ้ง): <span id="total-amount">0</span> บาท</div>
+
+    <!-- ข้อมูลการโอน -->
+    <label>ยอดโอน (บาท)</label>
+    <input type="number" id="pay_amount" placeholder="เช่น 1000">
+    
+    <label>วันที่โอน</label>
+    <input type="date" id="pay_date">
+    
+    <label>เวลาโอน</label>
+    <input type="time" id="pay_time">
+
+    <!-- เงื่อนไข -->
+    <div class="terms-box">
+        <div><strong>สั่งชิ้นงานผลิต = ยอมรับเงื่อนไข</strong></div>
+        <div style="margin-top: 10px;">หากเปลี่ยนแปลง/ยกเลิก → ไม่คืนเงินทุกกรณี</div>
+        <div style="margin-top: 8px; font-weight: bold;">❗️ อ่านให้ละเอียด ❗️</div>
+        <ul style="padding-left: 20px; margin: 8px 0;">
+            <li>1. ไม่เปลี่ยนแปลงขนาดหลังชำระเงิน</li>
+            <li>2. ไม่ยกเลิกการสั่งผลิต (ไม่ว่าเหตุใด)</li>
+            <li>3. ยอมรับสินค้าไม่ถึงตามกำหนดวัน (ไม่ร้องขอ)</li>
+        </ul>
+        <div style="margin-top: 8px;">โปรดตัดสินใจ ต่อมาเพิ่มจำนวนแจ้งทางไลน์ได้</div>
+    </div>
+
+    <button class="btn-submit" onclick="sendOrder()">✓ ส่งข้อมูลแจ้งสลิป</button>
+</div>
+
+<script>
+// ===== PRICE DATABASE (ตัวเต็ม) =====
+const PRICE_DB = {
+    "พวงกุญแจอะคริลิค ด้านเดียว": {
+        "3 cm": { "20": 127, "30": 150, "50": 170, "100": 320 },
+        "4 cm": { "20": 140, "30": 170, "50": 240, "100": 380 },
+        "5 cm": { "20": 170, "30": 198, "50": 280, "100": 480 },
+        "6 cm": { "20": 215, "30": 298, "50": 330, "100": 590 },
+        "7 cm": { "20": 250, "30": 310, "50": 420, "100": 720 },
+        "10 cm": { "20": 290, "30": 420, "50": 660, "100": 1255 },
+        "12 cm": { "20": 490, "30": 685, "50": 1190, "100": 2225 },
+        "15 cm": { "20": 535, "30": 789, "50": 1290, "100": 2590 }
+    },
+    "สแตนดี้อะคริลิค ด้านเดียว": {
+        "3 cm": { "20": 127, "30": 150, "50": 170, "100": 320 },
+        "4 cm": { "20": 140, "30": 170, "50": 240, "100": 380 },
+        "5 cm": { "20": 170, "30": 198, "50": 280, "100": 480 },
+        "6 cm": { "20": 215, "30": 298, "50": 330, "100": 590 },
+        "7 cm": { "20": 250, "30": 310, "50": 420, "100": 720 },
+        "10 cm": { "20": 290, "30": 420, "50": 660, "100": 1255 },
+        "12 cm": { "20": 490, "30": 685, "50": 1190, "100": 2225 },
+        "15 cm": { "20": 535, "30": 789, "50": 1290, "100": 2590 }
+    },
+    "ปิ๊กกีต้าร์ (คละลายไม่ได้)": {
+        "30 mm": { "20": 270, "30": 340, "50": 450, "100": 760 }
+    },
+    "ถุงสปัน": {
+        "30x40cm": { "10": 190, "50": 590, "100": 1100, "200": 2000 }
+    },
+    "ถุง Eco bag 1 Logo": {
+        "37x42 cm": { "1-19 ใบ": 75, "20+ ใบ": 54 }
+    },
+    "ถุง Eco bag พิมพ์เต็มใบ": {
+        "60x41 cm": { "1-4 ใบ": 190, "5-20 ใบ": 116, "21-50 ใบ": 68 }
+    },
+    "สายคล้องคอ Lanyard": {
+        "2x92 cm": { "30": 650, "50": 860, "100": 1200 }
+    },
+    "กระจกขนาด 7 cm": {
+        "7 cm": { "50": 250, "100": 450 }
+    },
+    "ตัวหนีบอะคริลิค 4 cm": {
+        "4 cm": { "20": 250, "30": 360, "50": 500 }
+    },
+    "Griptok 5cm/6cm": {
+        "5 cm": { "20": 230, "30": 330, "50": 480 },
+        "6 cm": { "20": 310, "30": 420, "50": 650 }
+    },
+    "card holder แบบแข็ง": {
+        "6.8x11 cm": { "10": 150, "50": 590, "100": 890 }
+    },
+    "เฟรมการ์ด / miniframcard": {
+        "26.5x9.2 cm": { "1-9 ชิ้น": 135, "10-50 ชิ้น": 50, "51-100 ชิ้น": 30 },
+        "4.5x7.5 cm": { "10": 250, "11-49 ชิ้น": 25, "50+ ชิ้น": 21 }
+    },
+    "สติกเกอร์ไดคัท 50%": {
+        "5 cm": { "1000": 150 }
+    },
+    "การ์ดใสขนาด 5.5x8.5cm": {
+        "5.5x8.5 cm": { "100": 250 }
+    },
+    "พัดใส": {
+        "17 cm": { "20": 285, "50": 480, "100": 760 }
+    },
+    "พัด PP": {
+        "17 cm": { "20": 385, "50": 680, "100": 1200 }
+    },
+    "เข็มกลัด": {
+        "25 mm": { "10": 80, "30": 100, "50": 165, "100": 310 }
+    },
+    "งานอะคริลิค พิมพ์หน้าหลังคนละลาย": {
+        "4 cm": { "50": 290 },
+        "5 cm": { "50": 320 },
+        "6 cm": { "50": 390 },
+        "7 cm": { "50": 520 }
+    },
+    "พวงกุญแจ pudding": {
+        "4x4.5 cm": { "20": 840, "50": 1260, "100": 2000 }
+    },
+    "ตัวถนอมสายชาร์จอะคริลิค": {
+        "3 cm": { "20": 120, "30": 170, "50": 280, "100": 470 }
+    },
+    "พวงกุญแจห้อยคู่": {
+        "4+2 cm": { "20": 260, "30": 375, "50": 575 },
+        "5+2 cm": { "20": 280, "30": 400, "50": 600 }
+    }
+};
+
+// ===== INIT =====
+let productCount = 0;
+
+function initForm() {
+    addProduct();
+}
+
+function getSizeOptions(type) {
+    return PRICE_DB[type] ? Object.keys(PRICE_DB[type]) : [];
+}
+
+function getQtyOptions(type, size) {
+    return PRICE_DB[type] && PRICE_DB[type][size] ? Object.keys(PRICE_DB[type][size]) : [];
+}
+
+function getPrice(type, size, qty) {
+    if (PRICE_DB[type] && PRICE_DB[type][size] && PRICE_DB[type][size][qty]) {
+        return PRICE_DB[type][size][qty];
+    }
+    return 0;
+}
+
+function addProduct() {
+    const container = document.getElementById('product-list');
+    const items = container.getElementsByClassName('product-item');
+    
+    if (items.length >= 3) {
+        alert('⚠️ สูงสุด 3 รายการ');
+        return;
+    }
+
+    productCount++;
+    const itemHtml = `
+        <div class="product-item" id="product-${productCount}">
+            <div style="font-weight:600; color:#76615b; margin-bottom:10px;">
+                รายการสั่งซื้อที่ ${items.length + 1}
+                ${items.length > 0 ? `<button type="button" class="btn-remove" onclick="removeProduct(${productCount})">ลบรายการ</button>` : ''}
+            </div>
+            
+            <label>ประเภทงาน</label>
+            <select class="p-type" onchange="updateSizes(${productCount}); calculateTotal()">
+                <option value="">-- เลือกประเภทงาน --</option>
+                ${Object.keys(PRICE_DB).map(type => `<option value="${type}">${type}</option>`).join('')}
+            </select>
+            
+            <label>ขนาด</label>
+            <select class="p-size" id="size-${productCount}" onchange="updateQtys(${productCount}); calculateTotal()">
+                <option value="">-- เลือกประเภทก่อน --</option>
+            </select>
+            
+            <label>จำนวน</label>
+            <select class="p-qty" id="qty-${productCount}" onchange="calculateTotal()">
+                <option value="">-- เลือกขนาดก่อน --</option>
+            </select>
+            
+            <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท</label>
+            <input type="number" class="p-plus" id="plus-${productCount}" min="0" placeholder="จำนวนชิ้น (0 = ไม่มี)" oninput="calculateTotal()">
+        </div>
+    `;
+
+    container.insertAdjacentHTML('beforeend', itemHtml);
+}
+
+function removeProduct(productCount) {
+    const item = document.getElementById(`product-${productCount}`);
+    if (item) item.remove();
+    calculateTotal();
+}
+
+function updateSizes(productCount) {
+    const typeSelect = document.querySelector(`#product-${productCount} .p-type`);
+    const sizeSelect = document.getElementById(`size-${productCount}`);
+    const qtySelect = document.getElementById(`qty-${productCount}`);
+    
+    const type = typeSelect.value;
+    const sizes = getSizeOptions(type);
+    
+    sizeSelect.innerHTML = sizes.length > 0 
+        ? `<option value="">-- เลือกขนาด --</option>${sizes.map(s => `<option value="${s}">${s}</option>`).join('')}`
+        : '<option value="">-- ไม่มีข้อมูล --</option>';
+    
+    qtySelect.innerHTML = '<option value="">-- เลือกขนาดก่อน --</option>';
+    calculateTotal();
+}
+
+function updateQtys(productCount) {
+    const typeSelect = document.querySelector(`#product-${productCount} .p-type`);
+    const sizeSelect = document.getElementById(`size-${productCount}`);
+    const qtySelect = document.getElementById(`qty-${productCount}`);
+    
+    const type = typeSelect.value;
+    const size = sizeSelect.value;
+    const qtys = getQtyOptions(type, size);
+    
+    qtySelect.innerHTML = qtys.length > 0
+        ? `<option value="">-- เลือกจำนวน --</option>${qtys.map(q => `<option value="${q}">${q}</option>`).join('')}`
+        : '<option value="">-- ไม่มีข้อมูล --</option>';
+    
+    calculateTotal();
+}
+
+function calculateTotal() {
+    let grandTotal = 0;
+    let hasError = false;
+    
+    document.querySelectorAll('.product-item').forEach(item => {
+        const type = item.querySelector('.p-type').value;
+        const size = item.querySelector('.p-size').value;
+        const qty = item.querySelector('.p-qty').value;
+        const plus = parseInt(item.querySelector('.p-plus').value) || 0;
+        
+        if (type && size && qty) {
+            const price = getPrice(type, size, qty);
+            const plusPrice = plus * 2; // ชิ้นละ 2 บาท
+            grandTotal += price + plusPrice;
+            item.classList.remove('error');
+        } else if (type || size || qty) {
+            item.classList.add('error');
+            hasError = true;
+        } else if (plus > 0) {
+            // ถ้ามีเฉพาะอะไหล่ให้นับราคาอะไหล่
+            grandTotal += plus * 2;
+            item.classList.remove('error');
+        }
+    });
+    
+    document.getElementById('total-amount').textContent = grandTotal.toLocaleString('th-TH');
+}
+
+async function sendOrder() {
+    // Validation
+    const twitter = document.getElementById('twitter').value.trim();
+    const line = document.getElementById('line').value.trim();
+    const drive_link = document.getElementById('drive_link').value.trim();
+    const pay_amount = document.getElementById('pay_amount').value.trim();
+    const pay_date = document.getElementById('pay_date').value;
+    const pay_time = document.getElementById('pay_time').value;
+    
+    const items = document.querySelectorAll('.product-item');
+    let itemsValid = true;
+    
+    if (!twitter || !line || !drive_link) {
+        alert('⚠️ กรุณากรอก Twitter, ชื่อไลน์, และ Google Drive Link');
+        return;
+    }
+    
+    if (!pay_amount || !pay_date || !pay_time) {
+        alert('⚠️ กรุณากรอกข้อมูลการโอน (ยอดโอน, วันที่, เวลา)');
+        return;
+    }
+    
+    // ตรวจสอบรายการ
+    items.forEach(item => {
+        const type = item.querySelector('.p-type').value;
+        const size = item.querySelector('.p-size').value;
+        const qty = item.querySelector('.p-qty').value;
+        
+        if (!type || !size || !qty) {
+            itemsValid = false;
+            item.classList.add('error');
+        }
+    });
+    
+    if (!itemsValid) {
+        alert('⚠️ กรุณากรอกรายละเอียดสินค้าให้ครบ (ประเภท, ขนาด, จำนวน)');
+        return;
+    }
+
+    // Prepare data
+    const data = new URLSearchParams();
+    data.append('timestamp', new Date().toISOString());
+    data.append('twitter', twitter);
+    data.append('line', line);
+    data.append('drive_link', drive_link);
+    data.append('pay_amount', pay_amount);
+    data.append('pay_date', pay_date);
+    data.append('pay_time', pay_time);
+    data.append('count', items.length);
+    
+    items.forEach((item, index) => {
+        const type = item.querySelector('.p-type').value;
+        const size = item.querySelector('.p-size').value;
+        const qty = item.querySelector('.p-qty').value;
+        const plus = parseInt(item.querySelector('.p-plus').value) || 0;
+        const price = getPrice(type, size, qty);
+        const plusPrice = plus * 2;
+        
+        data.append(`product_${index}_type`, type);
+        data.append(`product_${index}_size`, size);
+        data.append(`product_${index}_qty`, qty);
+        data.append(`product_${index}_price`, price);
+        data.append(`product_${index}_plus`, plus);
+        data.append(`product_${index}_plus_price`, plusPrice);
+        data.append(`product_${index}_total`, price + plusPrice);
+    });
+
+    // Send to Google Apps Script
+    try {
+        await fetch('https://script.google.com/macros/s/AKfycbzNJhb0DONKc2gM8cbGKyED82CJ5NKD1al-09F6ZAEbasw6vhRFb1JNwo1A-qsLVBpv/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: data
+        });
+        
+        alert('✅ ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
+        window.location.href = "https://lin.ee/9wcT9tB";
+    } catch (e) {
+        console.error('Error:', e);
+        alert('❌ ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่');
+    }
+}
+
+// Init
+window.addEventListener('DOMContentLoaded', initForm);
+</script>
+
+</body>
+</html>
