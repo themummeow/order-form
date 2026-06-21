@@ -491,7 +491,7 @@ async function sendOrder() {
         });
         
         alert('✅ ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
-        window.location.href = "https://lin.ee/9wcT9tB";
+        window.open("https://lin.ee/9wcT9tB", "_blank");
     } catch (e) {
         console.error('Error:', e);
         alert('❌ ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่');
