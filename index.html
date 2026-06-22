@@ -21,6 +21,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 .btn-remove:hover { background:#e8c8e6; }
 .btn-submit { background:#76615b; color:#fff; border:none; padding:15px; border-radius:25px; font-weight:600; cursor:pointer; width:100%; font-size:1rem; }
 .btn-submit:hover { background:#5c4e47; }
+.btn-submit:disabled { opacity:0.6; cursor:not-allowed; }
 .terms-box { background:#fffcfd; border:1px solid #f1dbf0; padding:15px; border-radius:10px; margin-bottom:20px; color:#76615b; font-size:0.85rem; line-height:1.5; }
 .total-display { font-size:1.3rem; font-weight:bold; color:#d63384; text-align:center; padding:15px; background:#fff0f5; border-radius:10px; border:2px dashed #d63384; margin-bottom:20px; }
 .info-box { background:#fffcfd; border:1px solid #f1dbf0; padding:15px; border-radius:10px; margin-bottom:15px; color:#76615b; font-size:0.9rem; line-height:1.6; }
@@ -72,11 +73,9 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 
   <div class="terms-box">
     <div><strong>สั่งชิ้นงานผลิต = ยอมรับเงื่อนไข</strong></div>
-    <div style="margin-bottom:10px;"><strong>กรุณาอ่านรายละเอียดก่อนส่งฟอร์ม:</strong></div>
-    <div style="margin-bottom:10px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-top:12px;">หากเปลี่ยนแปลง/ยกเลิก ไม่คืนเงินทุกกรณี</div>
+    <div style="margin-top:10px;">หากเปลี่ยนแปลง/ยกเลิก ไม่คืนเงินทุกกรณี</div>
     <div style="margin-top:8px; font-weight:bold;">❗️ อ่านให้ละเอียด ❗️</div>
-    <ul style="solid #f1dbf0; padding-top:10px; font-weight:bold;">
+    <ul style="padding-left:20px; margin:8px 0;">
       <li>1. ไม่เปลี่ยนแปลงขนาดหลังชำระเงิน</li>
       <li>2. ไม่ยกเลิกการสั่งผลิต (ไม่ว่าเหตุใด)</li>
       <li>3. ยอมรับกรณีสินค้าไม่ถึงตามกำหนดวัน จะไม่มีการเรียกร้องใดๆ เนื่องจากระยะเวลาการสั่งผลิตของถึงไทยเป็นแค่การคาดการณ์+-วันให้ตามจริง แต่หากเกิดสินค้าติดด่านตรวจจะไม่สามารถดำเนินการใด ๆ ได้</li>
@@ -113,7 +112,6 @@ const PRICE_DB = {
   "ทิชชู่": { "72x15x51 cm":{"30":260,"60":360,"100":460} }
 };
 
-// สินค้าที่ราคาเป็น "ต่อชิ้น/ต่อใบ" ต้องกรอกจำนวนจริงมาคูณ
 const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด / miniframcard","สติกเกอร์ไดคัท 50%"];
 function isPerPiece(type){ return PER_PIECE.indexOf(type) !== -1; }
 
@@ -151,8 +149,8 @@ function addProduct(){
         <label>จำนวนที่ต้องการ (ใบ/ชิ้น) - นำไปคูณราคาต่อชิ้น</label>
         <input type="number" class="p-unitqty" min="1" placeholder="เช่น 25" oninput="calculateTotal()">
       </div>
-      <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท</label>
-      <input type="number" class="p-plus" id="plus-${productCount}" min="0" placeholder="จำนวนชิ้น (0 = ไม่มี)" oninput="calculateTotal()">
+      <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท [ไม่บังคับ]</label>
+      <input type="number" class="p-plus" id="plus-${productCount}" min="0" placeholder="เว้นว่างได้ถ้าไม่มี" oninput="calculateTotal()">
     </div>`;
   container.insertAdjacentHTML('beforeend', itemHtml);
 }
@@ -213,6 +211,7 @@ function calculateTotal(){
 }
 
 async function sendOrder(){
+  const btn = document.querySelector('.btn-submit');
   const twitter = document.getElementById('twitter').value.trim();
   const line = document.getElementById('line').value.trim();
   const drive_link = document.getElementById('drive_link').value.trim();
@@ -234,6 +233,9 @@ async function sendOrder(){
     if(isPerPiece(type) && (!unitEl || !parseInt(unitEl.value))){ itemsValid=false; item.classList.add('error'); }
   });
   if(!itemsValid){ alert('⚠️ กรุณากรอกรายละเอียดสินค้าให้ครบ (ประเภท, ขนาด, จำนวน)\nสินค้าคิดต่อชิ้นต้องกรอกจำนวนด้วย'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'กำลังส่ง...';
 
   const data = new URLSearchParams();
   data.append('timestamp', new Date().toISOString());
@@ -266,14 +268,29 @@ async function sendOrder(){
   });
 
   try {
-    await fetch('https://script.google.com/macros/s/AKfycbxc6UHn_GHZr-j6M2sPFf2Lx2asnf1g4DBLHIyfbmBezHWKfY9_E3lGKjhVGn44vYQQ/exec', {
+    await fetch('https://script.google.com/macros/s/AKfycbxksA7Cm9M3iuiOygcITyFKnJ_Vtt9msEfCYV32BcxPvAiq7mR2Wp32svJc0u_WulFb/exec', {
       method:'POST', mode:'no-cors', body:data
     });
     alert('✅ ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
+
+    document.getElementById('twitter').value = '';
+    document.getElementById('line').value = '';
+    document.getElementById('drive_link').value = '';
+    document.getElementById('pay_amount').value = '';
+    document.getElementById('pay_date').value = '';
+    document.getElementById('pay_time').value = '';
+    document.getElementById('product-list').innerHTML = '';
+    productCount = 0;
+    addProduct();
+    calculateTotal();
+
     window.open("https://lin.ee/9wcT9tB", "_blank");
   } catch(e){
     console.error('Error:', e);
     alert('❌ ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'กดส่งข้อมูลผลิต';
   }
 }
 
