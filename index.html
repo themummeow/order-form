@@ -122,7 +122,7 @@ const EXTRA_INFO = {
     imgLink:     "https://ibb.co/xqvrKWYw",
     note:        "📎 ดูภาพตัวอย่างอะไหล่ด้านบน แล้วระบุเบอร์อะไหล่ที่ต้องการ",
     label:       "ระบุเบอร์อะไหล่พิเศษ (ถ้ามี)",
-    placeholder: "เช่น ฮาร์ท เบอร์ 3",
+    placeholder: "เช่น no.3",
     required:    false
   },
   "พวงกุญแจห้อยคู่": {
@@ -130,7 +130,7 @@ const EXTRA_INFO = {
     imgLink:     "https://ibb.co/xqvrKWYw",
     note:        "📎 ดูภาพตัวอย่างอะไหล่ด้านบน แล้วระบุเบอร์อะไหล่ที่ต้องการ\n⚠️ คละลายไม่ได้ — ต้องเป็นลายเดียวกันทั้งหมด",
     label:       "ระบุเบอร์อะไหล่พิเศษ (ถ้ามี)",
-    placeholder: "เช่น ฮาร์ท เบอร์ 3",
+    placeholder: "เช่น no.3",
     required:    false
   },
   "พวงกุญแจ pudding": {
@@ -138,7 +138,7 @@ const EXTRA_INFO = {
     imgLink:     "https://ibb.co/x8sDtRh9",
     note:        "📎 ดูตัวเลือกสีด้านบน แล้วระบุสีที่ต้องการ\n⚠️ คละลายไม่ได้ — ต้องเป็นลายเดียวกันทั้งหมด",
     label:       "ระบุสี pudding ที่ต้องการ ✳️",
-    placeholder: "เช่น ชมพู / ใส / ขาวขุ่น",
+    placeholder: "เช่น pink-choco",
     required:    true
   },
   "งานอะคริลิค พิมพ์หน้าหลังคนละลาย": {
@@ -154,7 +154,7 @@ const EXTRA_INFO = {
     imgLink:     "https://ibb.co/1GQ7qhbm",
     note:        "📎 ดูตัวเลือกสีถุงด้านบน แล้วระบุสีที่ต้องการ",
     label:       "ระบุสีถุงสปัน ✳️",
-    placeholder: "เช่น สีดำ / สีขาว / สีชมพู",
+    placeholder: "เช่น ถุงขาวหูดำ",
     required:    true
   },
   "ถุง Eco bag 1 Logo": {
@@ -216,7 +216,7 @@ function addProduct(){
         <input type="text" class="p-extra" id="extra-input-${pc}" placeholder="">
       </div>
       <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท [ไม่บังคับ]</label>
-      <input type="number" class="p-plus" id="plus-${pc}" min="0" placeholder="เว้นว่างได้ถ้าไม่มี" oninput="calculateTotal()">
+      <input type="number" class="p-plus" id="plus-${pc}" min="0" placeholder="❗️เฉพาะ สั่งห้อยคู่ไม่ต้องกรอก❗️" oninput="calculateTotal()">
     </div>`;
   container.insertAdjacentHTML('beforeend', itemHtml);
 }
