@@ -45,7 +45,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 <body>
 <div id="order-form-container">
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.125 : สินค้าถึงไทย 17 ส.ค.69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.125 : สินค้าถึงไทย 17 ส.ค. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
     <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 3 ก.ค. 69 เวลา 22.00 น.</div>
@@ -322,11 +322,11 @@ async function sendOrder(){
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
-  window.addEventListener('DOMContentLoaded', initForm);
+
   
   try {
     await fetch('https://script.google.com/macros/s/AKfycbwHhTWCPSIPEho_zvbUsHvLaN6WfF3vrprcyG5AbKKjWIjqN3Y9-P08GO0_Wy_qwbnI/exec',{method:'POST',mode:'no-cors',body:data});
-    alert('ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
+    alert('✅ส่งข้อมูลเรียบร้อย!\n\n❗️ส่งสลิปการโอนทางไลน์เพื่อยืนยันการผลิต');
     document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
     document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
     document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
@@ -334,6 +334,8 @@ async function sendOrder(){
   } catch(e){ console.error('Error:',e); alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่'); }
   finally { btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต'; }
 }
+
+  window.addEventListener('DOMContentLoaded', initForm);
 
 </script>
 </body>
