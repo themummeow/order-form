@@ -321,7 +321,7 @@ async function sendOrder(){
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
   try {
-    await fetch('https://script.google.com/macros/s/AKfycbxksA7Cm9M3iuiOygcITyFKnJ_Vtt9msEfCYV32BcxPvAiq7mR2Wp32svJc0u_WulFb/exec',{method:'POST',mode:'no-cors',body:data});
+    await fetch('https://script.google.com/macros/s/AKfycbwHhTWCPSIPEho_zvbUsHvLaN6WfF3vrprcyG5AbKKjWIjqN3Y9-P08GO0_Wy_qwbnI/exec',{method:'POST',mode:'no-cors',body:data});
     alert('ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
     document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
     document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
