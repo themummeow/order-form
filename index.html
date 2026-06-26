@@ -321,6 +321,9 @@ async function sendOrder(){
     data.append(`product_${index}_total`,price+plusPrice);
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
+
+  window.addEventListener('DOMContentLoaded', initForm);
+  
   try {
     await fetch('https://script.google.com/macros/s/AKfycbwHhTWCPSIPEho_zvbUsHvLaN6WfF3vrprcyG5AbKKjWIjqN3Y9-P08GO0_Wy_qwbnI/exec',{method:'POST',mode:'no-cors',body:data});
     alert('ส่งข้อมูลเรียบร้อย!\n\nโปรดติดต่อทางไลน์เพื่อยืนยันการสั่งผลิต');
@@ -332,7 +335,6 @@ async function sendOrder(){
   finally { btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต'; }
 }
 
-window.addEventListener('DOMContentLoaded', initForm);
 </script>
 </body>
 </html>
