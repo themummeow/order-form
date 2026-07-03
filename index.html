@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -117,8 +116,6 @@ const PRICE_DB = {
   "🆕💥ทดลองผลิต collagebook": { "11x14 cm":{"1":150,"10":690,"20":1200,"50":2750} }
 };
 
-// ── ข้อมูลภาพ + ช่องกรอกพิเศษ สำหรับสินค้าที่ต้องระบุเพิ่มเติม ──
-// required:true = บังคับกรอก, required:false = ไม่บังคับ
 const EXTRA_INFO = {
   "พวงกุญแจอะคริลิค ด้านเดียว": {
     imgUrl:      "https://i.ibb.co/m5sPrk0d/7.png",
@@ -170,7 +167,8 @@ const EXTRA_INFO = {
   }
 };
 
-const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด / miniframcard"];
+// ⭐ สินค้าคิดราคา "ต่อชิ้น/ต่อใบ" → โชว์ช่องกรอกจำนวนจริงมาคูณ (แก้ชื่อให้ตรง PRICE_DB แล้ว)
+const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด"];
 function isPerPiece(type){ return PER_PIECE.indexOf(type) !== -1; }
 
 let productCount = 0;
@@ -287,7 +285,7 @@ function calculateTotal(){
   document.getElementById('total-amount').textContent=grandTotal.toLocaleString('th-TH');
 }
 
-async function sendOrder(){
+function sendOrder(){
   const btn=document.querySelector('.btn-submit');
   const twitter=document.getElementById('twitter').value.trim(), line=document.getElementById('line').value.trim(), drive_link=document.getElementById('drive_link').value.trim();
   const pay_amount=document.getElementById('pay_amount').value.trim(), pay_date=document.getElementById('pay_date').value, pay_time=document.getElementById('pay_time').value;
@@ -306,8 +304,10 @@ async function sendOrder(){
       itemsValid=false; item.classList.add('error'); extraInp.style.borderColor='#d63384';
     } else if(extraInp){ extraInp.style.borderColor=''; }
   });
-  if(!itemsValid){ alert('กรุณากรอกรายละเอียดให้ครบ รวมถึงข้อมูลสี/เบอร์อะไหล่ของสินค้าที่มีเครื่องหมาย ✳️'); return; }
+  if(!itemsValid){ alert('กรุณากรอกรายละเอียดให้ครบ รวมถึงจำนวนที่ต้องการ (สินค้าคิดต่อชิ้น) และข้อมูลสี/เบอร์อะไหล่ของสินค้าที่มีเครื่องหมาย ✳️'); return; }
+
   btn.disabled=true; btn.textContent='กำลังส่ง...';
+
   const data=new URLSearchParams();
   data.append('timestamp',new Date().toISOString()); data.append('twitter',twitter); data.append('line',line); data.append('drive_link',drive_link);
   data.append('pay_amount',pay_amount); data.append('pay_date',pay_date); data.append('pay_time',pay_time); data.append('count',items.length);
@@ -324,21 +324,26 @@ async function sendOrder(){
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
-
-  
+  // ── ส่งข้อมูล (keepalive กันข้อมูลหลุดตอนเปลี่ยนหน้า/เปิดไลน์) ──
   try {
-    await fetch('https://script.google.com/macros/s/AKfycbzk4EnEcEEvSKvs1kp3R2UFcdhQYhF0K2TZG79ytQgTyx3bnbepFgGVuRsYkohMDKgl/exec',{method:'POST',mode:'no-cors',body:data});
-    alert('✅ส่งข้อมูลเรียบร้อย!\n\n❗️ส่งสลิปการโอนทางไลน์เพื่อยืนยันการผลิต');
-    document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
-    document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
-    document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
-    window.open("https://lin.ee/uCgrQOK","_blank");
-  } catch(e){ console.error('Error:',e); alert('ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่'); }
-  finally { btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต'; }
+    fetch('https://script.google.com/macros/s/AKfycbzk4EnEcEEvSKvs1kp3R2UFcdhQYhF0K2TZG79ytQgTyx3bnbepFgGVuRsYkohMDKgl/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true});
+  } catch(err){ console.error('Error:',err); }
+
+  // ── เคลียร์ฟอร์ม ──
+  document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
+  document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
+  document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
+
+  // ── เปิดไลน์ทันทีในจังหวะกดปุ่ม (กันมือถือบล็อก) + fallback ──
+  var lineUrl="https://lin.ee/uCgrQOK";
+  var w=window.open(lineUrl,"_blank");
+  alert('✅ ส่งข้อมูลเรียบร้อย!\n\n❗️ ส่งสลิปการโอนทางไลน์เพื่อยืนยันการผลิต\n(ถ้าไลน์ไม่เปิดอัตโนมัติ กดปุ่มติดต่อไลน์ที่หน้าเว็บได้เลย)');
+  if(!w){ window.location.href=lineUrl; }
+
+  btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต';
 }
 
-  window.addEventListener('DOMContentLoaded', initForm);
-
+window.addEventListener('DOMContentLoaded', initForm);
 </script>
 </body>
 </html>
