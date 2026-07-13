@@ -326,7 +326,7 @@ function sendOrder(){
 
   // ── ส่งข้อมูล (keepalive กันข้อมูลหลุดตอนเปลี่ยนหน้า/เปิดไลน์) ──
   try {
-    fetch('https://script.google.com/macros/s/AKfycbyuV8V4Qs0DgTLfp-P-NT6CkuCDc_UW8sMdj4pKHAYRwUX7i9wux2gLQlVovpw6wAey/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true});
+    fetch('https://script.google.com/macros/s/AKfycbyQMcZ3uXHeBxBzybLRPsM-8SWBWiN8lscM4No2T3QsJ5EO7WD-QHugNhBRZw9naXar/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true});
   } catch(err){ console.error('Error:',err); }
 
   // ── เคลียร์ฟอร์ม ──
