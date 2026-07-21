@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -8,7 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap');
 * { box-sizing: border-box; }
 body { margin: 0; padding: 20px; background: #f9f5f7; }
-#order-form-container { font-family:'Sarabun',sans-serif; max-width:550px; margin:0 auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(118,97,91,0.1); border:1px solid #f1dbf0; color:#444; }
+#order-form-container { font-family:'Sarabun',sans-serif; max-width:550px; margin:0 auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(118,97,91,0.1); border:1px solid #f1dbf0; color:#444; position:relative; }
 input, select, button { font-family:'Sarabun',sans-serif !important; }
 .product-item { padding:15px; border:2px solid #f1dbf0; border-radius:10px; margin-bottom:15px; background:#fffcfd; }
 .product-item.error { border-color:#d63384; background:#fff5f8; }
@@ -39,10 +40,53 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 .extra-info-box label { margin-top:6px; }
 .extra-info-box input[type="text"] { margin-bottom:0; border-color:#f1a8d0; }
 .extra-info-box input[type="text"]:focus { border-color:#d63384; }
+/* ── SUCCESS OVERLAY ── */
+#success-overlay {
+  display:none;
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(70,50,55,0.55);
+  z-index:9999;
+  align-items:center; justify-content:center;
+  padding:20px;
+}
+#success-overlay.show { display:flex; }
+.success-card {
+  background:#fff; border-radius:18px; padding:32px 24px; max-width:400px; width:100%;
+  text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  font-family:'Sarabun',sans-serif;
+}
+.success-icon { font-size:3rem; margin-bottom:10px; }
+.success-title { font-size:1.2rem; font-weight:600; color:#76615b; margin-bottom:12px; }
+.success-text { font-size:0.9rem; color:#76615b; line-height:1.7; margin-bottom:20px; }
+.success-line-btn {
+  display:block; background:#06C755; color:#fff; text-decoration:none;
+  padding:14px; border-radius:25px; font-weight:600; margin-bottom:12px;
+}
+.success-line-btn:hover { background:#05a648; }
+.success-close-btn {
+  display:block; background:#f1dbf0; color:#76615b; border:none;
+  padding:12px; border-radius:25px; font-weight:600; width:100%; cursor:pointer; font-size:0.95rem;
+}
+.success-close-btn:hover { background:#e8c8e6; }
 </style>
 </head>
 <body>
 <div id="order-form-container">
+
+  <!-- ── SUCCESS OVERLAY ── -->
+  <div id="success-overlay">
+    <div class="success-card">
+      <div class="success-icon">✅</div>
+      <div class="success-title">ส่งข้อมูลเรียบร้อยแล้ว!</div>
+      <div class="success-text">
+        ❗️ กรุณาส่งสลิปการโอนทางไลน์เพื่อยืนยันการผลิต<br>
+        กดปุ่มด้านล่างเพื่อแอดไลน์และส่งสลิป
+      </div>
+      <a href="https://lin.ee/uCgrQOK" target="_blank" class="success-line-btn">💬 แอดไลน์ / ส่งสลิปที่นี่</a>
+      <button type="button" class="success-close-btn" onclick="closeSuccessOverlay()">ปิดหน้าต่างนี้</button>
+    </div>
+  </div>
+
   <div class="info-box">
     <div style="margin-bottom:8px;"><strong>Lot.128 : สินค้าถึงไทย 8 ก.ย. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
@@ -285,6 +329,13 @@ function calculateTotal(){
   document.getElementById('total-amount').textContent=grandTotal.toLocaleString('th-TH');
 }
 
+function showSuccessOverlay(){
+  document.getElementById('success-overlay').classList.add('show');
+}
+function closeSuccessOverlay(){
+  document.getElementById('success-overlay').classList.remove('show');
+}
+
 function sendOrder(){
   const btn=document.querySelector('.btn-submit');
   const twitter=document.getElementById('twitter').value.trim(), line=document.getElementById('line').value.trim(), drive_link=document.getElementById('drive_link').value.trim();
@@ -324,23 +375,20 @@ function sendOrder(){
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
-  // ── ส่งข้อมูล (keepalive กันข้อมูลหลุดตอนเปลี่ยนหน้า/เปิดไลน์) ──
-  try {
-    fetch('https://script.google.com/macros/s/AKfycby_YnPJKNp6pnkbZpQFLd4NYGjaZiXB7mS0M-MGGp9MXN-L1fQ-gwximMIgU4mNZEHC/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true});
-  } catch(err){ console.error('Error:',err); }
+  // ── ส่งข้อมูลไป Google Sheet ──
+  fetch('https://script.google.com/macros/s/AKfycby_YnPJKNp6pnkbZpQFLd4NYGjaZiXB7mS0M-MGGp9MXN-L1fQ-gwximMIgU4mNZEHC/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+    .catch(err=>console.error('Error:',err))
+    .finally(()=>{
+      // ── เคลียร์ฟอร์ม ──
+      document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
+      document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
+      document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
 
-  // ── เคลียร์ฟอร์ม ──
-  document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
-  document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
-  document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
+      // ── โชว์หน้าจอส่งสำเร็จในเว็บ (ไม่ใช้ alert/window.open ที่โดนบล็อกง่าย) ──
+      showSuccessOverlay();
 
-  // ── เปิดไลน์ทันทีในจังหวะกดปุ่ม (กันมือถือบล็อก) + fallback ──
-  var lineUrl="https://lin.ee/uCgrQOK";
-  var w=window.open(lineUrl,"_blank");
-  alert('✅ ส่งข้อมูลเรียบร้อย!\n\n❗️ ส่งสลิปการโอนทางไลน์เพื่อยืนยันการผลิต\n(ถ้าไลน์ไม่เปิดอัตโนมัติ กดปุ่มติดต่อไลน์ที่หน้าเว็บได้เลย)');
-  if(!w){ window.location.href=lineUrl; }
-
-  btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต';
+      btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต';
+    });
 }
 
 window.addEventListener('DOMContentLoaded', initForm);
