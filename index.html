@@ -165,7 +165,7 @@ const PRICE_DB = {
     "3 cm":{"50 คละได้ 3 ภาพ(จำนวนหลัก 10)":250},
     "4 cm":{"50 คละได้ 3 ภาพ(จำนวนหลัก 10)":330},
     "5 cm":{"50 คละได้ 3 ภาพ(จำนวนหลัก 10)":420} 
-    } }
+    } 
   
 };
 
@@ -241,7 +241,7 @@ function getPrice(type,size,qty){ if(PRICE_DB[type]&&PRICE_DB[type][size]&&PRICE
 function addProduct(){
   const container = document.getElementById('product-list');
   const items = container.getElementsByClassName('product-item');
-  if(items.length >= 3){ alert('สูงสุด 3 รายการ'); return; }
+  if(items.length >= 6){ alert('สูงสุด 6 รายการ'); return; }
   productCount++;
   const pc = productCount;
   const itemHtml = `
