@@ -88,11 +88,11 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.135 : สินค้าถึงไทย 25 ต.ค. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.136 : สินค้าถึงไทย 30 ต.ค. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 11 ก.ย. 69 เวลา 22.00 น.</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 18 ก.ย. 69 เวลา 22.00 น.</div>
     <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
   <label>บัญชี X / Twitter</label>
@@ -182,32 +182,11 @@ const PRICE_DB = {
     "7.5x7.5 cm":{"150":150}
     },
 
-  "pro 9.9 : baby charm": { 
-    "2 cm":{"50":149}
+  "pro อะคริลิคพวงกุญแจเจาะรู/ไม่เจาะรู ❌คละลายไม่ได้": { "เจาะรู พวงกุญแจก 5 cm ❌ไม่มีไข่ปลา:{"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":500},
+  "ไม่เจาะรู":{"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":500},
     },
 
-    "pro 9.9 : carble protector": { 
-    "3 cm":{"50":259}
-    },
-
-    "pro 9.9 : pocket mirror": { 
-    "7 cm":{"50":229}
-    },
-
-    "pro 9.9 : clear handfan พัดใส": { 
-    "17 cm":{"20":279}
-    },
-
-    "pro 9.9 : acrylic front/back หน้าหลังคนละลาย": { 
-    "5 cm":{"20":299}
-    },
-
-    "pro 9.9 : cardholders": { 
-    "6.8x11 cm":{"100":769}
-    },
-
-
-    "carabiner หนา 3mm (test Lot.135)": {
+    "carabiner หนา 3mm (test Lot.136)": {
     "7cm": { "10": 180, "30": 480, "50": 750, "100": 1400 }
   }
   
@@ -445,7 +424,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbw3ihhoTLaOuU3Wh0OvADglPDrcB3-ogJ6bxIP2SaA4pwOJp41Y5u9OfQ3VuDq4uE1N/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbyhNrlLAxNvHZMDMIYeNNiJXsKDRJz-U_9PD7Ej4DOQSbUclYcFUh8wmJhExXRo1kFO/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
