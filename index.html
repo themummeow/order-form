@@ -88,11 +88,11 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.136 : สินค้าถึงไทย 30 ต.ค. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.137 : สินค้าถึงไทย 6 พ.ย. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 18 ก.ย. 69 เวลา 22.00 น.</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 2 ต.ค. 69 เวลา 22.00 น.</div>
     <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
   <label>บัญชี X / Twitter</label>
@@ -151,7 +151,7 @@ const PRICE_DB = {
   "Griptok magsafe 5cm": { "5 cm":{"10 ❌คละลายไม่ได้":450,"20 ❌คละลายไม่ได้":800,"30 ❌คละลายไม่ได้":1170,"50 ❌คละลายไม่ได้":1850,"100 ❌คละลายไม่ได้":3600} },
   "card holder แบบแข็ง": { "6.8x11 cm":{"10":150,"50":590,"100":890} },
   "เฟรมการ์ด ❌คละลายไม่ได้": { "26.5x9.2 cm":{"1-9 ชิ้น":135,"10-50 ชิ้น":50,"51-100 ชิ้น":30,"101-199 ชิ้น":26,"200 ชิ้นขั้นไป":23} },
-  "miniframcard": { "4.5x7.5 cm":{"10":25,"11-49 ชิ้น":25,"50+ ชิ้น":21},"หัวใจ 2 ภาพ":{"1+ ชิ้น":42} },
+  "miniframcard": { "4.5x7.5 cm":{"10":25,"11-49 ชิ้น":25,"50+ ชิ้น":21},"หัวใจ 2 ภาพ":{"ชิ้นละ 42บาท ขั้นต่ำ 10 ชิ้น":42} },
   "การ์ดใสขนาด 5.5x8.5cm": { "5.5x8.5 cm":{"100":250} },
   "พัดใส": { "17 cm":{"20":285,"50":480,"100":760} },
   "พัด PP": { "17 cm":{"20":385,"50":680,"100":1200} },
@@ -261,7 +261,7 @@ const EXTRA_INFO = {
 };
 
 // ⭐ สินค้าคิดราคา "ต่อชิ้น/ต่อใบ" → โชว์ช่องกรอกจำนวนจริงมาคูณ (แก้ชื่อให้ตรง PRICE_DB แล้ว)
-const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด ❌คละลายไม่ได้","ผ้าห่มนุ่ม","miniframcard","หัวใจ 2 ภาพ"];
+const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด ❌คละลายไม่ได้","ผ้าห่มนุ่ม","miniframcard","ชิ้นละ 42บาท ขั้นต่ำ 10 ชิ้น"];
 function isPerPiece(type){ return PER_PIECE.indexOf(type) !== -1; }
 
 let productCount = 0;
@@ -425,7 +425,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbyhNrlLAxNvHZMDMIYeNNiJXsKDRJz-U_9PD7Ej4DOQSbUclYcFUh8wmJhExXRo1kFO/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbzt13cx54DgKK1KyEgwL9UfvwhfGwrAultlUKSZH4SUAzTkQFB2xn_WUcq8gQ7lPPJR/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
