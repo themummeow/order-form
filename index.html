@@ -88,11 +88,11 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.137 : สินค้าถึงไทย 6 พ.ย. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.138 : สินค้าถึงไทย 14 พ.ย. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 25 ก.ย. 69 เวลา 22.00 น.</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 2 ต.ค. 69 เวลา 22.00 น.</div>
     <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
   <label>บัญชี X / Twitter</label>
@@ -136,18 +136,19 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 <script>
 const PRICE_DB = {
   
-  "pro อะคริลิคพวงกุญแจเจาะรู/ไม่เจาะรู ❌คละลายไม่ได้": { "เจาะรู พวงกุญแจก 5 cm ❌ไม่มีไข่ปลา":{"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":500},
-  "ไม่เจาะรู":{"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":500}
+  "pro Griptok Magsafe พิมพ์ฐาน ❌คละลายไม่ได้": {"5cm":{"10":400,"20":790,"50":1900},
+  "6cm":{"10":450,"20":890,"50":2100}
     },    
   
-    "📥ทดลองผลิต keychain choco plaque": { 
-    "4cm":{"10❌คละลายไม่ได้ สีอะคริลิคสีครีม":175,"20 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":340,"30 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":495,"50 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":800,"100 ❌คละลายไม่ได้ เลือกสีอะคริลิคได้":1450},"5cm":{"10 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":200,"20 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":390,"30 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":570,"50 ❌คละลายไม่ได้ สีอะคริลิคสีครีม":900,"100 ❌คละลายไม่ได้ เลือกสีอะคริลิคได้":1650}
-    },
-    "📥ทดลองผลิต notepade กระดาษโน้ต 150แผ่น": { 
-    "7.5x7.5 cm":{"150":150}
+    "pro CardHolder 100 ea แบบแข็ง": { 
+    "6.8x11 cm":{"100❌คละลายไม่ได้":770}
     },
   
-    "📥ทดลองผลิต PVC Bag สกรีน UV": { 
+    "pro Cable Protecter 100 ea": { 
+    "3cm":{"100❌คละลายไม่ได้":450}
+    },
+  
+    "pro PVC bag สกรีน UV": { 
     "16x20 cm":{"10":160}
     },
 
@@ -445,7 +446,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbzt13cx54DgKK1KyEgwL9UfvwhfGwrAultlUKSZH4SUAzTkQFB2xn_WUcq8gQ7lPPJR/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbyP5p_40Pg4qD6N89AvYNUm8l31X2i5uVVUctEYCNvO8gwlIQO2VqbsvIoP4qNlHVl5/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
