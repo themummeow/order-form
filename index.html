@@ -135,12 +135,12 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 
 <script>
 const PRICE_DB = {
-
-  "pro พวงกุญแจอะคริลิค/อะคริลิคเปล่า ❌คละลายไม่ได้": {"4cm":{"50":130,"100":260,"200":500},
-  "5cm":{"50":150,"100":280,"200":520}
-    },   
   
-    "pro CardHolder 100 ea แบบแข็ง": { 
+  "pro พวงกุญแจอะคริลิต/อะคริลิคเปล่า ไม่มีสแตนดี้ ❌คละลายไม่ได้": {"4cm":{"50":130,"100":260,"200":500},
+  "5cm":{"50":150,"100":280,"200":520,}
+    },    
+  
+    "pro Cardholder 100 ea แบบแข็ง": { 
     "6.8x11 cm":{"100❌คละลายไม่ได้":770}
     },
   
@@ -156,7 +156,7 @@ const PRICE_DB = {
   "พวงกุญแจอะคริลิค ด้านเดียว(ราคาปกติ)": { "3 cm":{"20❌คละลายไม่ได้":127,"30❌คละลายไม่ได้":150,"50":170,"100":320},"4 cm":{"20❌คละลายไม่ได้":140,"30❌คละลายไม่ได้":170,"50":240,"100":380},"5 cm":{"20❌คละลายไม่ได้":170,"30❌คละลายไม่ได้":198,"50":280,"100":480},"6 cm":{"20❌คละลายไม่ได้":215,"30❌คละลายไม่ได้":298,"50":330,"100":590},"7 cm":{"20❌คละลายไม่ได้":250,"30❌คละลายไม่ได้":310,"50":420,"100":720},"10 cm":{"20❌คละลายไม่ได้":290,"30❌คละลายไม่ได้":420,"50":660,"100":1255},"12 cm":{"20❌คละลายไม่ได้":490,"30❌คละลายไม่ได้":685,"50":1190,"100":2225},"15 cm":{"20❌คละลายไม่ได้":535,"30❌คละลายไม่ได้":789,"50":1290,"100":2590} },
   "สแตนดี้อะคริลิค ด้านเดียว(ราคาปกติ)": { "3 cm":{"20❌คละลายไม่ได้":127,"30❌คละลายไม่ได้":150,"50":170,"100":320},"4 cm":{"20❌คละลายไม่ได้":140,"30❌คละลายไม่ได้":170,"50":240,"100":380},"5 cm":{"20❌คละลายไม่ได้":170,"30❌คละลายไม่ได้":198,"50":280,"100":480},"6 cm":{"20❌คละลายไม่ได้":215,"30❌คละลายไม่ได้":298,"50":330,"100":590},"7 cm":{"20❌คละลายไม่ได้":250,"30❌คละลายไม่ได้":310,"50":420,"100":720},"10 cm":{"20❌คละลายไม่ได้":290,"30❌คละลายไม่ได้":420,"50":660,"100":1255},"12 cm":{"20❌คละลายไม่ได้":490,"30❌คละลายไม่ได้":685,"50":1190,"100":2225},"15 cm":{"20❌คละลายไม่ได้":535,"30❌คละลายไม่ได้":789,"50":1290,"100":2590} },
   "ปิ๊กกีต้าร์ (คละลายไม่ได้)": { "30 mm":{"20":270,"30":340,"50":450,"100":760} },
-  "ถุง Eco bag 1 Logo": { "37x42 cm":{"20+ ใบ":54} },
+  "ถุง Eco bag 1 Logo": { "37x42 cm":{"1-19 ใบ":75,"20+ ใบ":54} },
   "ถุง Eco bag พิมพ์เต็มใบ": { "60x41 cm":{"1-4 ใบ":190,"5-20 ใบ":116,"21-50 ใบ":68} },
   "สายคล้องคอ Lanyard": { "2x92 cm":{"30":650,"50":860,"100":1200},"2x33 cm":{"100":1080} },
   "ตัวหนีบอะคริลิค 4 cm": { "4 cm":{"20":250,"30":360,"50":500} },
@@ -168,6 +168,7 @@ const PRICE_DB = {
   "พัดใส": { "17 cm":{"20":285,"50":480,"100":760} },
   "พัด PP": { "17 cm":{"20":385,"50":680,"100":1200} },
   "งานอะคริลิค พิมพ์หน้าหลังคนละลาย": { "4 cm":{"50":290},"5 cm":{"50":320},"6 cm":{"50":390},"7 cm":{"50":520} },
+  "พวงกุญแจ pudding": { "4x4.5 cm":{"20":840,"50":1260,"100":2000} },
   "ตัวถนอมสายชาร์จอะคริลิค": { "3 cm":{"20":120,"30":170,"50":280,"100":470} },
   "พวงกุญแจห้อยคู่": { "4+2 cm":{"20":260,"30":375,"50":575},"5+2 cm":{"20":280,"30":400,"50":600} },
   "ทิชชู่": { "72x15x51 cm":{"30":260,"60":360,"100":460} },
@@ -181,10 +182,6 @@ const PRICE_DB = {
   
     "กระจก": { 
     "7 cm":{"50":250,"100":450}
-    },
-
-    "sticker dicut 50%": { 
-    "5 cm":{"1000":150,"2000":270}
     },
 
 
@@ -294,12 +291,12 @@ function addProduct(){
         ${items.length > 0 ? `<button type="button" class="btn-remove" onclick="removeProduct(${pc})">ลบรายการ</button>` : ''}
       </div>
       <label>ประเภทงาน</label>
-      <select class="p-type" onchange="updateSizes(pc);updateExtraInfo({pc}); calculateTotal()">
+      <select class="p-type" onchange="updateSizes(${pc}); updateExtraInfo(${pc}); calculateTotal()">
         <option value="">-- เลือกประเภทงาน --</option>
         ${Object.keys(PRICE_DB).map(type => `<option value="${type}">${type}</option>`).join('')}
       </select>
       <label>ขนาด</label>
-      <select class="p-size" id="size-pc"onchange="updateQtys({pc}); calculateTotal()">
+      <select class="p-size" id="size-${pc}" onchange="updateQtys(${pc}); calculateTotal()">
         <option value="">-- เลือกประเภทก่อน --</option>
       </select>
       <label id="qtylabel-${pc}">จำนวน</label>
@@ -372,7 +369,7 @@ function updateQtys(pc){
   const qtys = getQtyOptions(type,size);
   if(isPerPiece(type)){ qtyLabel.textContent='เรตราคา (ต่อชิ้น/ใบ)'; unitWrap.style.display='block'; }
   else { qtyLabel.textContent='จำนวน'; unitWrap.style.display='none'; }
-  qtySelect.innerHTML = qtys.length>0 ? `<option value="">-- เลือก --</option>${qtys.map(q=>`<option value="${q}">q{isPerPiece(type)?' (ราคา/ชิ้น)':''}</option>`).join('')}` : '<option value="">-- ไม่มีข้อมูล --</option>';
+  qtySelect.innerHTML = qtys.length>0 ? `<option value="">-- เลือก --</option>${qtys.map(q=>`<option value="${q}">${q}${isPerPiece(type)?' (ราคา/ชิ้น)':''}</option>`).join('')}` : '<option value="">-- ไม่มีข้อมูล --</option>';
   calculateTotal();
 }
 
@@ -436,7 +433,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbzom-iVOjj425g2lCe3Sl4NMOtyzx4vrK90fCkb2Rg8YUL_C9pzwvr5Vup7i7WV-YV1/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbyV_gnRLUjEz7QMxjJrzE7EhG8MJbLmgGyArqrdhpBSZzMS7KPHRqaQGb5smkGFfXvS/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
@@ -455,7 +452,3 @@ window.addEventListener('DOMContentLoaded', initForm);
 </script>
 </body>
 </html>
-
-
-
-
