@@ -102,7 +102,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   <label>ลิงก์ Google Drive (ไฟล์งาน)</label>
   <input type="text" id="drive_link" placeholder="https://drive.google.com/...">
   <div id="product-list"></div>
-  <button type="button" class="btn-add" onclick="addProduct()">+ เพิ่มรายการสั่งซื้อ (สูงสุด 6 รายการ)</button>
+  <button type="button" class="btn-add" onclick="addProduct()">+ เพิ่มรายการสั่งซื้อ (สูงสุด 10 รายการ)</button>
   <div class="payment-info">
     <div style="font-weight:bold; margin-bottom:5px;">จ่ายรอบแรก เฉพาะค่าผลิตสินค้า</div>
     <div>❌ ยังไม่ต้องชำระค่าจัดส่ง</div>
@@ -281,7 +281,7 @@ function getPrice(type,size,qty){ if(PRICE_DB[type]&&PRICE_DB[type][size]&&PRICE
 function addProduct(){
   const container = document.getElementById('product-list');
   const items = container.getElementsByClassName('product-item');
-  if(items.length >= 6){ alert('สูงสุด 6 รายการ'); return; }
+  if(items.length >= 10){ alert('สูงสุด 10 รายการ'); return; }
   productCount++;
   const pc = productCount;
   const itemHtml = `
