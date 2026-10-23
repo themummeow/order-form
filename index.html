@@ -463,7 +463,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbzFJhTzkyWmvw1IM9GRjZg6EkfEpaLWOUD9qtPuSvucVFIHgQ2U1XYYUtbh4xYEsMYf/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbwgHER32ztarf1YAzEZVvH3lC1TEqhzxUIMIGJCFX31YcxodJZOLFZZO-8iuc5-Wfcr/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
