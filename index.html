@@ -87,12 +87,12 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.142 : Arrives in Thailand on Dec 9, 2026</strong></div>
-    <div style="margin-bottom:8px;"><strong>Acrylic quota of 4,000 pieces reached — orders close immediately</strong></div>
-    <div style="margin-bottom:8px;"><strong>Please read the details before placing your order:</strong></div>
-    <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">Click here to read</a> By placing an order = you agree to the terms</div>
-    <div style="margin-bottom:8px;">🚨 Orders close on Friday, October 30, 2026 at 22:00</div>
-    <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 Please upload your design files to Google Drive before filling out the form</div>
+    <div style="margin-bottom:8px;"><strong>Lot.142 : สินค้าถึงไทย 9 ธ.ค. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
+    <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
+    <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 30 ต.ค. 69 เวลา 22.00 น.</div>
+    <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
   <label>บัญชี X / Twitter</label>
   <input type="text" id="twitter" placeholder="@username">
@@ -182,7 +182,7 @@ const PRICE_DB = {
     " 30x40cm ถุงขาวหูดำ": {"50":756}
   },
 
-  "พวงกุญแจอะคริลิค ด้านเดียวมากกว่า 200 ชิ้น": {
+  "มากกว่า 200 ชิ้น พวงกุญแจอะคริลิค ด้านเดียว": {
     "3 cm": {"200 ชิ้น":3},
     "4 cm": {"200 ชิ้น":3.5},
     "5 cm": {"200 ชิ้น":4.5},
@@ -192,7 +192,7 @@ const PRICE_DB = {
     "15 cm": {"200 ชิ้น":25.5}
   },
 
-  "สแตนดี้อะคริลิค ด้านเดียวมากกว่า 200 ชิ้น": {
+  "มากกว่า 200 ชิ้น สแตนดี้อะคริลิค ด้านเดียว": {
     "3 cm": {"200 ชิ้น":3},
     "4 cm": {"200 ชิ้น":3.5},
     "5 cm": {"200 ชิ้น":4.5},
@@ -200,6 +200,10 @@ const PRICE_DB = {
     "10 cm": {"200 ชิ้น":12.3},
     "12 cm": {"200 ชิ้น":22},
     "15 cm": {"200 ชิ้น":25.5}
+  },
+
+  "มากกว่า 200 ชิ้น ตัวถนอมสายชาร์จอะคริลิค": {
+    "3 cm": {"200 ชิ้น":4.5}
   },
 
   "ปิ๊กกีต้าร์ (คละลายไม่ได้)": {
@@ -303,8 +307,12 @@ const PRICE_DB = {
 
 };
 
+// กลุ่มสินค้าที่ต้องกรอกจำนวนเอง (ไม่มี dropdown จำนวน) ขึ้นต้นด้วยข้อความนี้
+const FREE_QTY_PREFIX = "มากกว่า 200 ชิ้น";
+const FREE_QTY_LABEL = "200 ชิ้น";
+
 const EXTRA_INFO = {
-  "พวงกุญแจอะคริลิค ด้านเดียวมากกว่า 200 ชิ้น": {
+  "มากกว่า 200 ชิ้น พวงกุญแจอะคริลิค ด้านเดียว": {
     imgUrl:      "https://i.ibb.co/m5sPrk0d/7.png",
     imgLink:     "https://ibb.co/xqvrKWYw",
     note:        "📎 ดูภาพตัวอย่างอะไหล่ด้านบน แล้วระบุเบอร์อะไหล่ที่ต้องการ",
@@ -379,8 +387,9 @@ const EXTRA_INFO = {
 };
 
 // ⭐ สินค้าคิดราคา "ต่อชิ้น/ต่อใบ" → โชว์ช่องกรอกจำนวนจริงมาคูณ
-const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด ❌คละลายไม่ได้","ผ้าห่มนุ่ม","miniframcard","ชิ้นละ 42บาท ขั้นต่ำ 10 ชิ้น","พวงกุญแจอะคริลิค ด้านเดียวมากกว่า 200 ชิ้น","สแตนดี้อะคริลิค ด้านเดียวมากกว่า 200 ชิ้น"];
+const PER_PIECE = ["ถุง Eco bag 1 Logo","ถุง Eco bag พิมพ์เต็มใบ","เฟรมการ์ด ❌คละลายไม่ได้","ผ้าห่มนุ่ม","miniframcard","ชิ้นละ 42บาท ขั้นต่ำ 10 ชิ้น","มากกว่า 200 ชิ้น พวงกุญแจอะคริลิค ด้านเดียว","มากกว่า 200 ชิ้น สแตนดี้อะคริลิค ด้านเดียว","มากกว่า 200 ชิ้น ตัวถนอมสายชาร์จอะคริลิค"];
 function isPerPiece(type){ return PER_PIECE.indexOf(type) !== -1; }
+function isFreeQty(type){ return type.indexOf(FREE_QTY_PREFIX) === 0; }
 
 let productCount = 0;
 function initForm(){ addProduct(); }
@@ -476,6 +485,24 @@ function updateQtys(pc){
   const qtySelect = document.getElementById(`qty-${pc}`);
   const qtyLabel  = document.getElementById(`qtylabel-${pc}`);
   const unitWrap  = document.getElementById(`unitwrap-${pc}`);
+  const unitInp   = unitWrap.querySelector('.p-unitqty');
+
+  // ── สินค้า "มากกว่า 200 ชิ้น": ซ่อนตัวเลือกจำนวน กรอกจำนวนเองเท่านั้น ──
+  if(isFreeQty(type)){
+    qtyLabel.style.display = 'none';
+    qtySelect.style.display = 'none';
+    qtySelect.innerHTML = `<option value="${FREE_QTY_LABEL}" selected>${FREE_QTY_LABEL}</option>`;
+    qtyLabel.textContent = 'จำนวน';
+    unitWrap.style.display = 'block';
+    unitWrap.querySelector('label').textContent = 'จำนวนที่ต้องการ (ชิ้น) - ขั้นต่ำ 200 ชิ้น';
+    calculateTotal();
+    return;
+  }
+
+  // ── สินค้าทั่วไป: แสดงตัวเลือกจำนวนตามเดิม ──
+  qtyLabel.style.display = 'block';
+  qtySelect.style.display = 'block';
+  unitWrap.querySelector('label').textContent = 'จำนวนที่ต้องการ (ใบ/ชิ้น) - นำไปคูณราคาต่อชิ้น';
   const qtys = getQtyOptions(type,size);
   if(isPerPiece(type)){ qtyLabel.textContent='เรตราคา (ต่อชิ้น/ใบ)'; unitWrap.style.display='block'; }
   else { qtyLabel.textContent='จำนวน'; unitWrap.style.display='none'; }
@@ -516,13 +543,17 @@ function sendOrder(){
     const unitEl=item.querySelector('.p-unitqty');
     const extraBox=item.querySelector('.extra-info-box'), extraInp=item.querySelector('.p-extra');
     const extraVisible=extraBox&&extraBox.style.display!=='none';
-    if(!type||!size||!qty){ itemsValid=false; item.classList.add('error'); }
-    if(isPerPiece(type)&&(!unitEl||!parseInt(unitEl.value))){ itemsValid=false; item.classList.add('error'); }
+    if(isFreeQty(type)){
+      if(!unitEl||parseInt(unitEl.value)<200){ itemsValid=false; item.classList.add('error'); }
+    } else {
+      if(!type||!size||!qty){ itemsValid=false; item.classList.add('error'); }
+      if(isPerPiece(type)&&(!unitEl||!parseInt(unitEl.value))){ itemsValid=false; item.classList.add('error'); }
+    }
     if(extraVisible&&extraInp&&EXTRA_INFO[type]&&EXTRA_INFO[type].required&&!extraInp.value.trim()){
       itemsValid=false; item.classList.add('error'); extraInp.style.borderColor='#d63384';
     } else if(extraInp){ extraInp.style.borderColor=''; }
   });
-  if(!itemsValid){ alert('กรุณากรอกรายละเอียดให้ครบ รวมถึงจำนวนที่ต้องการ (สินค้าคิดต่อชิ้น) และข้อมูลสี/เบอร์อะไหล่ของสินค้าที่มีเครื่องหมาย ✳️'); return; }
+  if(!itemsValid){ alert('กรุณากรอกรายละเอียดให้ครบ รวมถึงจำนวนที่ต้องการ (สินค้า 200 ชิ้นขึ้นไปต้องไม่ต่ำกว่า 200) และข้อมูลสี/เบอร์อะไหล่ของสินค้าที่มีเครื่องหมาย ✳️'); return; }
 
   btn.disabled=true; btn.textContent='กำลังส่ง...';
 
@@ -542,16 +573,16 @@ function sendOrder(){
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
-  // ── Send data to Google Sheet ──
+  // ── ส่งข้อมูลไป Google Sheet ──
   fetch('https://script.google.com/macros/s/AKfycbwTr-rXDa9C6S1pxcKT_lXr7yhDR3QVMeKrTXvcuZF0u1J4OHndDxtcS0pvVX-eXGYI/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
-      // ── Clear form ──
+      // ── เคลียร์ฟอร์ม ──
       document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
       document.getElementById('pay_amount').value=''; document.getElementById('pay_date').value=''; document.getElementById('pay_time').value='';
       document.getElementById('product-list').innerHTML=''; productCount=0; addProduct(); calculateTotal();
 
-      // ── Show success overlay (no alert/window.open to avoid popup blocking) ──
+      // ── โชว์หน้าจอส่งสำเร็จในเว็บ (ไม่ใช้ alert/window.open ที่โดนบล็อกง่าย) ──
       showSuccessOverlay();
 
       btn.disabled=false; btn.textContent='กดส่งข้อมูลผลิต';
