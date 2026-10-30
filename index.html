@@ -87,11 +87,11 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.142 : สินค้าถึงไทย 9 ธ.ค. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.143 : สินค้าถึงไทย 12 ธ.ค. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 30 ต.ค. 69 เวลา 22.00 น.</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 6 พ.ย. 69 เวลา 22.00 น.</div>
     <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
   <label>บัญชี X / Twitter</label>
@@ -135,6 +135,17 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 <script>
 const PRICE_DB = {
 
+  "pro พวงกุญแจ/อะคริลิตไม่เจาะรู ❌คละลายไม่ได้|ไม่มีไข่ปลา": {
+    "3cm เจาะรูพวงกุญแจ": {"50 ❌คละลายไม่ได้":120,"100 ❌คละลายไม่ได้":230,"200 ❌คละลายไม่ได้":400},
+    "3cm ไม่เจาะรู": {"50 ❌คละลายไม่ได้":120,"100 ❌คละลายไม่ได้":230,"200 ❌คละลายไม่ได้":400},
+    "5cm เจาะรูพวงกุญแจ": {"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":520},
+    "5cm ไม่เจาะรู": {"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":520}
+  },
+  
+  "pro กระจก 100 ขิ้น": {
+    "7cm": {"100 ชิ้น":390}
+  },
+  
    "อะคริลิคเก็บหูฟัง": {
     "6cm": {"20 ชิ้น":420}
   },
@@ -244,7 +255,7 @@ const PRICE_DB = {
     },
 
     "กระจก": {
-    "7 cm":{"50":250,"100":450}
+    "7 cm":{"50":250,"100":390}
     },
 
 
@@ -523,7 +534,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet ──
-  fetch('https://script.google.com/macros/s/AKfycbwTr-rXDa9C6S1pxcKT_lXr7yhDR3QVMeKrTXvcuZF0u1J4OHndDxtcS0pvVX-eXGYI/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbyZs-MecOj1iOeWzFJMHuD38ajemMHftdWAdG80LB_fYL7FZV2ybxTvxEIWySJpxOmV/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       // ── เคลียร์ฟอร์ม ──
