@@ -29,6 +29,8 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 .info-box a:hover { text-decoration:underline; }
 .payment-info { background:#fffcfd; border:2px solid #f1dbf0; padding:20px; border-radius:12px; margin-bottom:20px; color:#76615b; line-height:1.8; }
 .payment-info div { margin-bottom:8px; }
+/* ── FISH BOX (เฉพาะรายการไข่ปลา) ── */
+.fish-box { margin-top:4px; margin-bottom:10px; padding:12px 14px; background:#f7fbff; border:1.5px dashed #6c9bd2; border-radius:10px; }
 /* ── EXTRA INFO BOX ── */
 .extra-info-box { margin-top:4px; margin-bottom:10px; padding:12px 14px; background:#fff8fe; border:1.5px dashed #d63384; border-radius:10px; }
 .extra-info-box .extra-label { font-size:0.82rem; color:#d63384; font-weight:700; margin-bottom:8px; margin-top:0; display:block; }
@@ -110,7 +112,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
     <div>- ชิษณุชา / Chitsanucha</div>
 
     <div style="font-weight:bold; font-size:1.15rem; margin:10px 0;">🏦 หรือชำระด้วย True Money</div>
-    
+
     <div style="margin:20px 0; text-align:center;">
   <a href="https://i.ibb.co/vC48ZJJf/Receive-Money-QR-2026-10-30-23-49-29.png" target="_blank" rel="noopener" style="display:block; text-decoration:none;">
     <img src="https://i.ibb.co/vC48ZJJf/Receive-Money-QR-2026-10-30-23-49-29.png" alt="ภาพประกอบ" loading="lazy" style="width:100%; max-width:460px; border-radius:12px; border:1px solid #f1dbf0; display:block; margin:0 auto;">
@@ -375,6 +377,54 @@ const FREE_QTY_PREFIX = "สั่งมากกว่า 200 ชิ้น";
 const FREE_QTY_LABEL = "200 ชิ้น";
 function isFreeQty(type){ return type.indexOf(FREE_QTY_PREFIX) === 0; }
 
+// ⭐ รายการไข่ปลา: เลือกรับ/ไม่รับ ถ้ารับต้องเลือกจำนวน (เท่ากับจำนวนอะคริลิค) และสี
+const FISH_ITEM = "pro พวงกุญแจ/อะคริลิตไม่เจาะรู ❌คละลายไม่ได้|ไม่มีไข่ปลา";
+
+// ⭐ สีไข่ปลา: ชื่อสี + ลิงก์ภาพ (ใส่ URL ในช่อง imgUrl)
+const FISH_COLORS = [
+  { name:"#1 ฟ้าสด",  imgUrl:"https://i.ibb.co/RpsKqmZg/1688-image-share-808865ef97dc1c58e50b14a8a873660a.jpg" },
+  { name:"#2 ชมพูนม",   imgUrl:"https://i.ibb.co/RmpVxF0/1688-image-share-cf14e2bd3428d4f5aca34f08e3004cc0.jpg" },
+  { name:"#3 ขาวเทา",  imgUrl:"https://i.ibb.co/MDm32P6t/1688-image-share-493f000d42301e9451263a7ee306748d.jpg" },
+  { name:"#4 ส้มอ่อน",  imgUrl:"https://i.ibb.co/5hyjQzn1/1688-image-share-475c87c487e504afde3200e5fae80bea.jpg" },
+  { name:"#5 เขียวแอปเปิ้ล",  imgUrl:"https://i.ibb.co/93mdP9qW/1688-image-share-936d74fc8b5f108e300eb6d080fdc8c2.jpg" },
+  { name:"#6 เหลืองพาสเทล",  imgUrl:"https://i.ibb.co/JwMzy7D4/1688-image-share-b6152bbc67d63ca8ae03d5ef7f684f33.jpg" },
+  { name:"#7 เบสฟ้า cool tone",  imgUrl:"https://i.ibb.co/4RB1hsYw/1688-image-share-3a37a250ef76cbf9e9f0fdefd5a344e4.jpg" },
+  { name:"#8 ม่วงเข้มล์",  imgUrl:"https://i.ibb.co/RpqgCMtr/1688-image-share-337d4e32acbe467a867e62a50818ab45.jpg" },
+  { name:"#9 แดง ผึ้งชอบสีแดง",  imgUrl:"https://i.ibb.co/JjhPTJ0r/1688-image-share-492d48aab817b5ebd682d862be700a4a.jpg" },
+  { name:"#10 เหลืองเข้ม",  imgUrl:"https://i.ibb.co/BVYT6gZy/1688-image-share-970c48b97753ac25e605ac31de6ad2fb.jpg" },
+  { name:"#11 ชมพูบาร์บี้",  imgUrl:"https://i.ibb.co/zVLj8zr1/1688-image-share-d54d21fd1cdf370e4d1e652d5d77bc1e.jpg" },
+  { name:"#12 น้ำเงินเทสดี",  imgUrl:"https://ibb.co/N6QvrzZM"><img src="https://i.ibb.co/KjRPDHFJ/1688-image-share-55c9d9e17e1cedaf3e20ddfaa826b835.jpg" },
+  { name:"#13 เขียวนมหวาน 50%",  imgUrl:"https://i.ibb.co/jPJHmw6Y/1688-image-share-375649fbca1ad23f63cde5ab5dc3ac02.jpg" },
+  { name:"#14 ชมพูพาสเทล",  imgUrl:"https://i.ibb.co/ymBf2Jvr/1688-image-share-9831fb200f653e1cb77ce01a7a758f6a.jpg" },
+  { name:"#15 ชมพู Monopink",  imgUrl:"https://i.ibb.co/m57bzMPk/1688-image-share-64cdb71d065c60e12b416be17d5cb68e.jpg" },
+  { name:"#16 น้ำตาล",  imgUrl:"https://i.ibb.co/8LBcqhNy/1688-image-share-dc7975c910a8f2b5c6a033ec26cf49c4.jpg" },
+  { name:"#17 ส้มน้องข้าว",  imgUrl:"https://i.ibb.co/xqyzXnNC/1688-image-share-7053fe61732e2a3c941a933e3cb8ac83.jpg" },
+  { name:"#18 ม่วงอ่อนล์",  imgUrl:"https://i.ibb.co/6MwtJkC/1688-image-share-08ed5eb486c2cbf8acb12a49be4c1834.jpg" },
+  { name:"#19 เขียวมัทฉะ จากเมือง Yame",  imgUrl:"https://i.ibb.co/qYHKhmqc/1688-image-share-1cd69cff200d71a3bd6b2ebbbe6a7d15.jpg" },
+  { name:"#20 ฟ้าสว่าง",  imgUrl:"https://i.ibb.co/wZHs731K/1688-image-share-57b98a7a42a0eb68a9448c2d6d95a2fc.jpg" },
+  { name:"#21 โอรส",  imgUrl:"https://i.ibb.co/JWJKLRLn/1688-image-share-710d6f5cf9763a9bcb8b7fc00dfd0b0f.jpg" },
+  { name:"#22 ฟ้าพาสเทล",  imgUrl:"https://i.ibb.co/chbZ7WPS/1688-image-share-52c13cfac4b146436e7575d8c1b73587.jpg" },
+  { name:"#23 เหลืองสด",  imgUrl:"https://i.ibb.co/W4q4mVcP/1688-image-share-1052a325884d6ef12b01dd4b8fcb4143.jpg" },
+  { name:"#24 เขียวมิ้น",  imgUrl:"https://i.ibb.co/BHGJ9F2p/1688-image-share-03568b415f6ef4c5236f479e8edd472e.jpg" },
+  { name:"#25 สีครีม",  imgUrl:"https://i.ibb.co/bR2NncQS/1688-image-share-5b9d47335476187c42f3353df44bb35b.jpg" },
+  { name:"#26 เขียวมังกรหยก",  imgUrl:"https://i.ibb.co/hJH18nQF/1688-image-share-4d5d6470a61f22af8689090f08c276ee.jpg" },
+  { name:"#27 เบสม่วงอ่อนล์",  imgUrl:"ttps://i.ibb.co/Ld5s1YzM/1688-image-share-0a6ca2347428e8d289bb0c2c87cbc075.jpg" },
+  { name:"#28 (ใจ)ดำ",  imgUrl:"https://i.ibb.co/tTdX4pmK/1688-image-share-721acad4421a6799efa033ef4d4a8ba5.jpg" },
+  { name:"#29 เทา",  imgUrl:"https://i.ibb.co/SDDZk4jS/1688-image-share-5756037e98e98a3ee17eb395d68d4821.jpg" },
+  { name:"#30 เงิน", imgUrl:"https://i.ibb.co/DDSGxWWX/1688-image-share-c96d494c34d4be3ff472dcd9fafcf643.jpg" }
+];
+
+// ⭐ ค่าไข่ปลา: รับไข่ปลาเท่านั้น คิดเส้นละ 0.4 บาทตามจำนวนชิ้น
+const FISH_FEE_PER_PIECE = 0.4;
+function getFishFee(item){
+  const type = item.querySelector('.p-type').value;
+  if(type !== FISH_ITEM) return 0;
+  const choice = item.querySelector('.p-fish-choice').value;
+  if(choice !== 'รับไข่ปลา') return 0;
+  const pieces = parseInt(item.querySelector('.p-qty').value) || 0;
+  return Math.round(pieces * FISH_FEE_PER_PIECE * 100) / 100;
+}
+
 let productCount = 0;
 function initForm(){ addProduct(); }
 function getSizeOptions(type){ return PRICE_DB[type] ? Object.keys(PRICE_DB[type]) : []; }
@@ -403,12 +453,38 @@ function addProduct(){
         <option value="">-- เลือกประเภทก่อน --</option>
       </select>
       <label id="qtylabel-${pc}">จำนวน</label>
-      <select class="p-qty" id="qty-${pc}" onchange="calculateTotal()">
+      <select class="p-qty" id="qty-${pc}" onchange="updateFishQty(${pc}); calculateTotal()">
         <option value="">-- เลือกขนาดก่อน --</option>
       </select>
       <div id="unitwrap-${pc}" style="display:none;">
         <label>จำนวนที่ต้องการ (ใบ/ชิ้น) - นำไปคูณราคาต่อชิ้น</label>
         <input type="number" class="p-unitqty" min="1" placeholder="เช่น 25" oninput="calculateTotal()">
+      </div>
+      <div id="fish-${pc}" class="fish-box" style="display:none;">
+        <label>ไข่ปลา ✳️</label>
+        <select class="p-fish-choice" id="fishchoice-${pc}" onchange="updateFishQty(${pc}); calculateTotal()">
+          <option value="">-- เลือก --</option>
+          <option value="ไม่รับไข่ปลา">ไม่รับไข่ปลา</option>
+          <option value="รับไข่ปลา">รับไข่ปลา</option>
+        </select>
+        <div id="fishqtywrap-${pc}" style="display:none;">
+          <label>จำนวนไข่ปลา (ต้องเท่ากับจำนวนอะคริลิคที่สั่ง)</label>
+          <select class="p-fish-qty" id="fishqty-${pc}" onchange="updateFishImg(${pc}); calculateTotal()">
+            <option value="">-- เลือกจำนวนไข่ปลา --</option>
+          </select>
+        </div>
+        <div id="fishcolorwrap-${pc}" style="display:none;">
+          <label>สีไข่ปลา ✳️</label>
+          <select class="p-fish-color" id="fishcolor-${pc}" onchange="updateFishImg(${pc}); calculateTotal()">
+            <option value="">-- เลือกสีไข่ปลา --</option>
+            ${FISH_COLORS.map(c => `<option value="${c.name}">${c.name}</option>`).join('')}
+          </select>
+          <div id="fishimgwrap-${pc}" style="display:none; text-align:center; margin-bottom:10px;">
+            <a id="fishimglink-${pc}" href="#" target="_blank" rel="noopener">
+              <img id="fishimg-${pc}" src="" alt="ภาพสีไข่ปลา" style="width:100%; max-width:300px; border-radius:8px; border:1px solid #f1dbf0;">
+            </a>
+          </div>
+        </div>
       </div>
       <div id="extra-${pc}" class="extra-info-box" style="display:none;">
         <span class="extra-label">📋 กรุณาระบุข้อมูลเพิ่มเติม</span>
@@ -428,6 +504,70 @@ function addProduct(){
 
 function removeProduct(pc){ const it=document.getElementById(`product-${pc}`); if(it) it.remove(); calculateTotal(); }
 
+// ── ไข่ปลา: แสดง/ซ่อนกล่องเฉพาะรายการนี้ ──
+function updateFishQty(pc){
+  const item = document.getElementById(`product-${pc}`);
+  if(!item) return;
+  const type = item.querySelector('.p-type').value;
+  const choice = document.getElementById(`fishchoice-${pc}`).value;
+  const acrylicQty = item.querySelector('.p-qty').value;
+  const qtyWrap = document.getElementById(`fishqtywrap-${pc}`);
+  const colorWrap = document.getElementById(`fishcolorwrap-${pc}`);
+  const fishQty = document.getElementById(`fishqty-${pc}`);
+  const colorSel = document.getElementById(`fishcolor-${pc}`);
+  if(type !== FISH_ITEM){
+    qtyWrap.style.display = 'none';
+    colorWrap.style.display = 'none';
+    updateFishImg(pc);
+    return;
+  }
+  if(choice === 'รับไข่ปลา'){
+    qtyWrap.style.display = 'block';
+    colorWrap.style.display = 'block';
+    fishQty.innerHTML = acrylicQty
+      ? `<option value="${acrylicQty}" selected>${acrylicQty}</option>`
+      : '<option value="">-- เลือกจำนวนอะคริลิคก่อน --</option>';
+  } else {
+    qtyWrap.style.display = 'none';
+    colorWrap.style.display = 'none';
+    fishQty.innerHTML = '<option value="">-- เลือกจำนวนไข่ปลา --</option>';
+    colorSel.value = '';
+  }
+  updateFishImg(pc);
+}
+
+// ── ไข่ปลา: แสดงภาพสีที่เลือก ──
+function updateFishImg(pc){
+  const colorSel = document.getElementById(`fishcolor-${pc}`);
+  if(!colorSel) return;
+  const found = FISH_COLORS.find(c => c.name === colorSel.value);
+  const wrap = document.getElementById(`fishimgwrap-${pc}`);
+  const img = document.getElementById(`fishimg-${pc}`);
+  if(found && found.imgUrl){
+    img.src = found.imgUrl;
+    document.getElementById(`fishimglink-${pc}`).href = found.imgUrl;
+    wrap.style.display = 'block';
+  } else {
+    img.src = '';
+    wrap.style.display = 'none';
+  }
+}
+
+// ── ไข่ปลา: ตรวจความครบถ้วน (รายการอื่นผ่านเสมอ) ──
+function fishValid(item){
+  const type = item.querySelector('.p-type').value;
+  if(type !== FISH_ITEM) return true;
+  const choice = item.querySelector('.p-fish-choice').value;
+  if(!choice) return false;
+  if(choice === 'รับไข่ปลา'){
+    const fq = item.querySelector('.p-fish-qty').value;
+    const aq = item.querySelector('.p-qty').value;
+    const color = item.querySelector('.p-fish-color').value;
+    return !!fq && fq === aq && !!color;
+  }
+  return true;
+}
+
 function updateExtraInfo(pc){
   const type      = document.querySelector(`#product-${pc} .p-type`).value;
   const extraBox  = document.getElementById(`extra-${pc}`);
@@ -436,6 +576,11 @@ function updateExtraInfo(pc){
   const extraNote = document.getElementById(`extra-note-${pc}`);
   const extraLbl  = document.getElementById(`extra-lbl-${pc}`);
   const extraInp  = document.getElementById(`extra-input-${pc}`);
+  // แสดงกล่องไข่ปลาเฉพาะรายการที่กำหนด
+  const fishBox = document.getElementById(`fish-${pc}`);
+  fishBox.style.display = (type === FISH_ITEM) ? 'block' : 'none';
+  if(type !== FISH_ITEM){ document.getElementById(`fishchoice-${pc}`).value = ''; }
+  updateFishQty(pc);
   if(EXTRA_INFO[type]){
     const info = EXTRA_INFO[type];
     extraImg.src          = info.imgUrl;
@@ -502,7 +647,12 @@ function calculateTotal(){
     const type=item.querySelector('.p-type').value, size=item.querySelector('.p-size').value, qty=item.querySelector('.p-qty').value;
     const plus=parseInt(item.querySelector('.p-plus').value)||0;
     const unitEl=item.querySelector('.p-unitqty'), unitQty=parseInt(unitEl?unitEl.value:0)||0;
-    if(type&&size&&qty){ const unitPrice=getPrice(type,size,qty); const price=isPerPiece(type)?unitPrice*unitQty:unitPrice; grandTotal+=price+(plus*2); item.classList.remove('error'); }
+    if(type&&size&&qty){
+      const unitPrice=getPrice(type,size,qty);
+      const price=isPerPiece(type)?unitPrice*unitQty:unitPrice;
+      const fishFee=getFishFee(item);
+      grandTotal+=price+(plus*2)+fishFee; item.classList.remove('error');
+    }
     else if(type||size||qty){ item.classList.add('error'); }
     else if(plus>0){ grandTotal+=plus*2; item.classList.remove('error'); }
   });
@@ -532,6 +682,7 @@ function sendOrder(){
     let ok = !!(type && size && qty);
     if(isFreeQty(type)) ok = ok && unitQty >= 200;
     else if(isPerPiece(type)) ok = ok && unitQty > 0;
+    if(!fishValid(item)) ok = false;
     if(extraVisible&&extraInp&&EXTRA_INFO[type]&&EXTRA_INFO[type].required&&!extraInp.value.trim()){
       ok = false; extraInp.style.borderColor='#d63384';
     } else if(extraInp){ extraInp.style.borderColor=''; }
@@ -548,12 +699,18 @@ function sendOrder(){
     const type=item.querySelector('.p-type').value, size=item.querySelector('.p-size').value, qty=item.querySelector('.p-qty').value;
     const plus=parseInt(item.querySelector('.p-plus').value)||0;
     const unitEl=item.querySelector('.p-unitqty'), unitQty=parseInt(unitEl?unitEl.value:0)||0;
-    const extraInp=item.querySelector('.p-extra'), extraVal=extraInp?extraInp.value.trim():'';
+    const extraInp=item.querySelector('.p-extra');
+    const fishChoice=item.querySelector('.p-fish-choice')?item.querySelector('.p-fish-choice').value:'';
+    const fishQtyVal=item.querySelector('.p-fish-qty')?item.querySelector('.p-fish-qty').value:'';
+    const fishColorVal=item.querySelector('.p-fish-color')?item.querySelector('.p-fish-color').value:'';
+    const fishInfo=fishChoice==='รับไข่ปลา' ? `รับไข่ปลา ${fishQtyVal} ชิ้น (${fishColorVal})` : (fishChoice||'');
+    const extraVal=[fishInfo, extraInp?extraInp.value.trim():''].filter(Boolean).join(' | ');
     const unitPrice=getPrice(type,size,qty), price=isPerPiece(type)?unitPrice*unitQty:unitPrice, plusPrice=plus*2;
+    const fishFee=getFishFee(item);
     const qtyText=isPerPiece(type)?(unitQty+' ชิ้น (เรต '+qty+')'):qty;
     data.append(`product_${index}_type`,type); data.append(`product_${index}_size`,size); data.append(`product_${index}_qty`,qtyText);
     data.append(`product_${index}_price`,price); data.append(`product_${index}_plus`,plus); data.append(`product_${index}_plus_price`,plusPrice);
-    data.append(`product_${index}_total`,price+plusPrice);
+    data.append(`product_${index}_total`,price+plusPrice+fishFee);
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
