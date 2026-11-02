@@ -380,7 +380,12 @@ function isFreeQty(type){ return type.indexOf(FREE_QTY_PREFIX) === 0; }
 // ⭐ รายการไข่ปลา: เลือกรับ/ไม่รับ ถ้ารับต้องเลือกจำนวน (เท่ากับจำนวนอะคริลิค) และสี
 const FISH_ITEM = "pro พวงกุญแจ/อะคริลิตไม่เจาะรู ❌คละลายไม่ได้|ไม่มีไข่ปลา";
 
-// ⭐ สีไข่ปลา: ชื่อสี + ลิงก์ภาพ (ใส่ URL ในช่อง imgUrl)
+// ⭐ รายการที่แสดงช่อง "อะไหล่พิเศษ" และคิดราคาอะไหล่ (ชิ้นละ 2 บาท) เฉพาะรายการนี้เท่านั้น
+const PART_ITEM = "พวงกุญแจอะคริลิค ด้านเดียว(ราคาปกติ)";
+const PART_FEE_PER_PIECE = 2;
+function isPartItem(type){ return type === PART_ITEM; }
+
+// ⭐ สีไข่ปลา: ชื่อสี + ลิงก์ภาพ
 const FISH_COLORS = [
   { name:"#1 ฟ้าสด",  imgUrl:"https://i.ibb.co/RpsKqmZg/1688-image-share-808865ef97dc1c58e50b14a8a873660a.jpg" },
   { name:"#2 ชมพูนม",   imgUrl:"https://i.ibb.co/RmpVxF0/1688-image-share-cf14e2bd3428d4f5aca34f08e3004cc0.jpg" },
@@ -423,6 +428,14 @@ function getFishFee(item){
   if(choice !== 'รับไข่ปลา') return 0;
   const pieces = parseInt(item.querySelector('.p-qty').value) || 0;
   return Math.round(pieces * FISH_FEE_PER_PIECE * 100) / 100;
+}
+
+// ⭐ ค่าอะไหล่: คิดเฉพาะรายการที่แสดงช่องอะไหล่เท่านั้น
+function getPartFee(item){
+  const type = item.querySelector('.p-type').value;
+  if(!isPartItem(type)) return 0;
+  const plus = parseInt(item.querySelector('.p-plus').value) || 0;
+  return plus * PART_FEE_PER_PIECE;
 }
 
 let productCount = 0;
@@ -496,8 +509,10 @@ function addProduct(){
         <label id="extra-lbl-${pc}"></label>
         <input type="text" class="p-extra" id="extra-input-${pc}" placeholder="">
       </div>
-      <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท [ไม่บังคับ]</label>
-      <input type="number" class="p-plus" id="plus-${pc}" min="0" placeholder="❗️เฉพาะ สั่งห้อยคู่ไม่ต้องกรอก❗️" oninput="calculateTotal()">
+      <div id="part-${pc}" style="display:none;">
+        <label>อะไหล่พิเศษ (สำหรับพวงกุญแจ) - ชิ้นละ 2 บาท [ไม่บังคับ]</label>
+        <input type="number" class="p-plus" id="plus-${pc}" min="0" placeholder="❗️เฉพาะ สั่งห้อยคู่ไม่ต้องกรอก❗️" oninput="calculateTotal()">
+      </div>
     </div>`;
   container.insertAdjacentHTML('beforeend', itemHtml);
 }
@@ -581,6 +596,10 @@ function updateExtraInfo(pc){
   fishBox.style.display = (type === FISH_ITEM) ? 'block' : 'none';
   if(type !== FISH_ITEM){ document.getElementById(`fishchoice-${pc}`).value = ''; }
   updateFishQty(pc);
+  // แสดงช่องอะไหล่เฉพาะ "พวงกุญแจอะคริลิค ด้านเดียว(ราคาปกติ)" และล้างค่าเมื่อไม่ใช่รายการนี้
+  const partBox = document.getElementById(`part-${pc}`);
+  partBox.style.display = isPartItem(type) ? 'block' : 'none';
+  if(!isPartItem(type)){ document.getElementById(`plus-${pc}`).value = ''; }
   if(EXTRA_INFO[type]){
     const info = EXTRA_INFO[type];
     extraImg.src          = info.imgUrl;
@@ -645,16 +664,16 @@ function calculateTotal(){
   let grandTotal = 0;
   document.querySelectorAll('.product-item').forEach(item=>{
     const type=item.querySelector('.p-type').value, size=item.querySelector('.p-size').value, qty=item.querySelector('.p-qty').value;
-    const plus=parseInt(item.querySelector('.p-plus').value)||0;
+    const partFee=getPartFee(item);
     const unitEl=item.querySelector('.p-unitqty'), unitQty=parseInt(unitEl?unitEl.value:0)||0;
     if(type&&size&&qty){
       const unitPrice=getPrice(type,size,qty);
       const price=isPerPiece(type)?unitPrice*unitQty:unitPrice;
       const fishFee=getFishFee(item);
-      grandTotal+=price+(plus*2)+fishFee; item.classList.remove('error');
+      grandTotal+=price+partFee+fishFee; item.classList.remove('error');
     }
     else if(type||size||qty){ item.classList.add('error'); }
-    else if(plus>0){ grandTotal+=plus*2; item.classList.remove('error'); }
+    else if(partFee>0){ grandTotal+=partFee; item.classList.remove('error'); }
   });
   document.getElementById('total-amount').textContent=grandTotal.toLocaleString('th-TH');
 }
@@ -705,12 +724,13 @@ function sendOrder(){
     const fishColorVal=item.querySelector('.p-fish-color')?item.querySelector('.p-fish-color').value:'';
     const fishInfo=fishChoice==='รับไข่ปลา' ? `รับไข่ปลา ${fishQtyVal} ชิ้น (${fishColorVal})` : (fishChoice||'');
     const extraVal=[fishInfo, extraInp?extraInp.value.trim():''].filter(Boolean).join(' | ');
-    const unitPrice=getPrice(type,size,qty), price=isPerPiece(type)?unitPrice*unitQty:unitPrice, plusPrice=plus*2;
+    const unitPrice=getPrice(type,size,qty), price=isPerPiece(type)?unitPrice*unitQty:unitPrice;
+    const partFee=getPartFee(item);
     const fishFee=getFishFee(item);
     const qtyText=isPerPiece(type)?(unitQty+' ชิ้น (เรต '+qty+')'):qty;
     data.append(`product_${index}_type`,type); data.append(`product_${index}_size`,size); data.append(`product_${index}_qty`,qtyText);
-    data.append(`product_${index}_price`,price); data.append(`product_${index}_plus`,plus); data.append(`product_${index}_plus_price`,plusPrice);
-    data.append(`product_${index}_total`,price+plusPrice+fishFee);
+    data.append(`product_${index}_price`,price); data.append(`product_${index}_plus`,plus); data.append(`product_${index}_plus_price`,partFee);
+    data.append(`product_${index}_total`,price+partFee+fishFee);
     if(extraVal) data.append(`product_${index}_extra`,extraVal);
   });
 
