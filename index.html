@@ -49,12 +49,13 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 .success-line-btn:hover { background:#05a648; }
 .success-close-btn { display:block; background:#f1dbf0; color:#76615b; border:none; padding:12px; border-radius:25px; font-weight:600; width:100%; cursor:pointer; font-size:0.95rem; }
 .success-close-btn:hover { background:#e8c8e6; }
+/* ── STEP (ทีละขั้นตอน) ── */
 .step { display:none; }
 .step-title { font-size:1.05rem; font-weight:700; color:#76615b; margin:6px 0 12px; }
 .step-progress { margin-bottom:15px; }
 .step-label { font-size:0.85rem; color:#76615b; font-weight:600; margin-bottom:6px; }
-.step-bar { height:8px; background:#f1dbf0; border-radius:8px; overflow:hidden; }
-.step-bar-fill { height:100%; background:#d63384; width:0; transition:width 0.3s; }
+.step-bar { height:8px; background:#e5dcd9; border-radius:8px; overflow:hidden; }
+.step-bar-fill { height:100%; background:#76615b; width:0; transition:width 0.3s; }
 .step-nav { display:flex; gap:10px; margin-top:10px; }
 .step-nav button { flex:1; padding:14px; border-radius:25px; border:none; font-weight:600; cursor:pointer; font-size:1rem; }
 .btn-back { background:#f1dbf0; color:#76615b; }
@@ -310,10 +311,11 @@ const PRICE_DB_ALL = {
 };
 
 // ================================================================
-// การแบ่งหน้า: ?type=acrylic | bag | card | d
-// หน้าที่ไม่มี ?type= จะเปิดกลุ่ม A (acrylic) ให้อัตโนมัติ
+// การแบ่งหน้า
+// - ไม่มี ?type= (หน้า order-form หลัก): แสดงสินค้าทุกรายการ
+// - ?type=acrylic | bag | card | d: แสดงเฉพาะกลุ่มนั้น และเลือกรายการแรกให้อัตโนมัติ
+// - ?type= ค่าอื่น: ซ่อนฟอร์ม
 // ชื่อกลุ่มเก็บไว้ในโค้ดเท่านั้น ไม่แสดงให้ลูกค้าเห็น
-// เปิดมาจะเลือกรายการแรกของกลุ่มให้อัตโนมัติ
 // ================================================================
 const GROUPS = {
   acrylic: {
@@ -377,10 +379,12 @@ const GROUPS = {
 
 function resolvePage(){
   const p = new URLSearchParams(window.location.search).get('type');
-  // ไม่มี ?type= ให้ใช้กลุ่ม acrylic เป็นค่าเริ่มต้น
-  const key = (p === null) ? 'acrylic' : p;
-  if(!GROUPS[key]) return null;
-  return { title: GROUPS[key].title, allowed: GROUPS[key].items, preset: GROUPS[key].items[0] };
+  // หน้าหลัก (ไม่มี ?type=): แสดงทุกรายการสินค้า ไม่เลือกรายการให้อัตโนมัติ
+  if(p === null){
+    return { title: "ทุกรายการสินค้า", allowed: Object.keys(PRICE_DB_ALL), preset: null };
+  }
+  if(!GROUPS[p]) return null;
+  return { title: GROUPS[p].title, allowed: GROUPS[p].items, preset: GROUPS[p].items[0] };
 }
 const PAGE = resolvePage();
 const PRICE_DB = {};
@@ -690,7 +694,7 @@ function addProduct(){
       </div>
     </div>`;
   container.insertAdjacentHTML('beforeend', itemHtml);
-  // ตั้งรายการแรกของกลุ่มให้อัตโนมัติ
+  // ตั้งรายการแรกของกลุ่มให้อัตโนมัติ (เฉพาะหน้ากลุ่ม ไม่ใช่หน้าหลัก)
   if(PAGE && PAGE.preset && items.length === 0){
     const el = document.getElementById(`product-${pc}`);
     el.querySelector('.p-type').value = PAGE.preset;
