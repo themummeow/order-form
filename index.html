@@ -49,7 +49,6 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 .success-line-btn:hover { background:#05a648; }
 .success-close-btn { display:block; background:#f1dbf0; color:#76615b; border:none; padding:12px; border-radius:25px; font-weight:600; width:100%; cursor:pointer; font-size:0.95rem; }
 .success-close-btn:hover { background:#e8c8e6; }
-/* ── STEP (ทีละขั้นตอน) ── */
 .step { display:none; }
 .step-title { font-size:1.05rem; font-weight:700; color:#76615b; margin:6px 0 12px; }
 .step-progress { margin-bottom:15px; }
@@ -312,6 +311,7 @@ const PRICE_DB_ALL = {
 
 // ================================================================
 // การแบ่งหน้า: ?type=acrylic | bag | card | d
+// หน้าที่ไม่มี ?type= จะเปิดกลุ่ม A (acrylic) ให้อัตโนมัติ
 // ชื่อกลุ่มเก็บไว้ในโค้ดเท่านั้น ไม่แสดงให้ลูกค้าเห็น
 // เปิดมาจะเลือกรายการแรกของกลุ่มให้อัตโนมัติ
 // ================================================================
@@ -377,8 +377,10 @@ const GROUPS = {
 
 function resolvePage(){
   const p = new URLSearchParams(window.location.search).get('type');
-  if(!p || !GROUPS[p]) return null;
-  return { title: GROUPS[p].title, allowed: GROUPS[p].items, preset: GROUPS[p].items[0] };
+  // ไม่มี ?type= ให้ใช้กลุ่ม acrylic เป็นค่าเริ่มต้น
+  const key = (p === null) ? 'acrylic' : p;
+  if(!GROUPS[key]) return null;
+  return { title: GROUPS[key].title, allowed: GROUPS[key].items, preset: GROUPS[key].items[0] };
 }
 const PAGE = resolvePage();
 const PRICE_DB = {};
