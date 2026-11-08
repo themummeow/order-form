@@ -96,7 +96,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 
   <!-- ขั้นที่ 1: ข้อมูลผู้สั่ง -->
   <div class="step" data-step="1">
-    <div class="step-title">ขั้นที่ 1: ข้อมูลผู้สั่ง</div>
+    <div class="step-title">ขั้นตอนที่ 1: กรอกข้อมูลผู้สั่ง</div>
     <label>บัญชี X / Twitter</label>
     <input type="text" id="twitter" placeholder="@username">
     <label>ชื่อไลน์ที่แสดง (❌ไม่ใช่ ID)</label>
@@ -107,14 +107,14 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 
   <!-- ขั้นที่ 2: เลือกสินค้า -->
   <div class="step" data-step="2">
-    <div class="step-title">ขั้นที่ 2: เลือกสินค้า</div>
+    <div class="step-title">ขั้นตอนที่ 2: เลือกสินค้า</div>
     <div id="product-list"></div>
     <button type="button" class="btn-add" onclick="addProduct()"> เพิ่มรายการสินค้า (สั่งเพิ่มได้สูงสุด 10 รายการ)</button>
   </div>
 
   <!-- ขั้นที่ 3: ยอดชำระ -->
   <div class="step" data-step="3">
-    <div class="step-title">ขั้นที่ 3: ยอดชำระ</div>
+    <div class="step-title">ขั้นตอนที่ 3: ชำระเงิน</div>
     <div class="total-display">ยอดชำระค่าผลิต (ไม่รวมชิปปิ้ง): <span id="total-amount">0</span> บาท</div>
     <div class="payment-info">
       <div style="font-weight:bold; margin-bottom:5px;">จ่ายรอบแรก เฉพาะค่าผลิตสินค้า</div>
@@ -138,7 +138,7 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 
   <!-- ขั้นที่ 4: แจ้งการโอน -->
   <div class="step" data-step="4">
-    <div class="step-title">ขั้นที่ 4: แจ้งการโอน</div>
+    <div class="step-title">ขั้นตอนที่ 4: แจ้งการโอน</div>
     <label>ยอดโอน (บาท)</label>
     <input type="number" id="pay_amount" placeholder="เช่น 1000">
     <label>วันที่โอน</label>
@@ -147,9 +147,9 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
     <input type="time" id="pay_time">
   </div>
 
-  <!-- ขั้นที่ 5: ยืนยัน -->
+  <!-- ขั้นตอนที่ 5: ยืนยัน -->
   <div class="step" data-step="5">
-    <div class="step-title">ขั้นที่ 5: ยืนยันการสั่งผลิต</div>
+    <div class="step-title">ขั้นตอนที่ 5: ยืนยันการสั่งผลิต</div>
     <div class="terms-box">
       <div><strong>สั่งชิ้นงานผลิต = ยอมรับเงื่อนไข</strong></div>
       <div style="margin-top:10px;">หากเปลี่ยนแปลง/ยกเลิก ไม่คืนเงินทุกกรณี</div>
