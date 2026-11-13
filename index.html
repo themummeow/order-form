@@ -83,11 +83,11 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
   </div>
 
   <div class="info-box">
-    <div style="margin-bottom:8px;"><strong>Lot.144 : สินค้าถึงไทย 19 ธ.ค. 69</strong></div>
+    <div style="margin-bottom:8px;"><strong>Lot.145 : สินค้าถึงไทย 26 ธ.ค. 69</strong></div>
     <div style="margin-bottom:8px;"><strong>อะครีิลิคครบโควต้า 4,000 ชิ้นปิดรับทันที</strong></div>
     <div style="margin-bottom:8px;"><strong>กรุณาอ่านรายละเอียดก่อนสั่งผลิต:</strong></div>
     <div style="margin-bottom:8px;"><a href="https://themummeow.carrd.co/#tos" target="_blank">คลิกอ่านที่นี่</a> หากส่งออเดอร์ = ยอมรับเงื่อนไข</div>
-    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 13 พ.ย. 69 เวลา 22.00 น.</div>
+    <div style="margin-bottom:8px;">🚨 ปิดรับรอบศุกร์ที่ 20 พ.ย. 69 เวลา 22.00 น.</div>
     <div style="border-top:1px solid #f1dbf0; padding-top:10px; font-weight:bold;">📁 กรุณานำไฟล์งานลง Google Drive ก่อนกรอกฟอร์ม</div>
   </div>
 
@@ -171,8 +171,8 @@ input:focus, select:focus { outline:none; border-color:#76615b; }
 const PRICE_DB_ALL = {
 
   "pro พวงกุญแจ/อะคริลิตไม่เจาะรู ❌คละลายไม่ได้|ไม่มีไข่ปลา": {
-    "4cm เจาะรูพวงกุญแจ": {"50 ❌คละลายไม่ได้":130,"100 ❌คละลายไม่ได้":260,"200 ❌คละลายไม่ได้":500},
-    "4cm ไม่เจาะรู": {"50 ❌คละลายไม่ได้":130,"100 ❌คละลายไม่ได้":260,"200 ❌คละลายไม่ได้":500}
+    "5cm เจาะรูพวงกุญแจ": {"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":520},
+    "5cm ไม่เจาะรู": {"50 ❌คละลายไม่ได้":150,"100 ❌คละลายไม่ได้":280,"200 ❌คละลายไม่ได้":520}
   },
 
   "📥ทดลอง mini slogan": {
@@ -896,7 +896,7 @@ function sendOrder(){
   });
 
   // ── ส่งข้อมูลไป Google Sheet (URL เดียวกันทุกหน้า) ──
-  fetch('https://script.google.com/macros/s/AKfycbw_VYMBk42MGOE5IOOg_Wg2DEJCpXIkBINCmCFgSQdOiXZFS-a0YcCCLBT9ydAzUmHP/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
+  fetch('https://script.google.com/macros/s/AKfycbyrvEkVTBhwRwXf5of1oI_lUIpHsg83j9_yGF8VJRfYwLUpkWwR76cy_QQ5ZGyWbuy8/exec',{method:'POST',mode:'no-cors',body:data,keepalive:true})
     .catch(err=>console.error('Error:',err))
     .finally(()=>{
       document.getElementById('twitter').value=''; document.getElementById('line').value=''; document.getElementById('drive_link').value='';
